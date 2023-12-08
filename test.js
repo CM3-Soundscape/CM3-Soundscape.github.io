@@ -222,9 +222,24 @@ function init() {
 
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
 
-  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3);
-  light.position.set(0.5, 1, 0.25);
-  scene.add(light);
+  scene.add( new THREE.HemisphereLight( 0xbcbcbc, 0xa5a5a5, 3 ) );
+
+	const light = new THREE.DirectionalLight( 0xffffff, 3 );
+	light.position.set( 0, 6, 0 );
+	light.castShadow = true;
+	light.shadow.camera.top = 2;
+	light.shadow.camera.bottom = - 2;
+	light.shadow.camera.right = 2;
+	light.shadow.camera.left = - 2;
+	light.shadow.mapSize.set( 4096, 4096 );
+	scene.add( light );
+
+  const floorGeometry = new THREE.PlaneGeometry( 4, 4 );
+	const floorMaterial = new THREE.MeshStandardMaterial( { color: 0x666666 } );
+	const floor = new THREE.Mesh( floorGeometry, floorMaterial );
+	floor.rotation.x = - Math.PI / 2;
+	floor.receiveShadow = true;
+	scene.add( floor );
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
