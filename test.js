@@ -36,7 +36,7 @@ function init() {
 
     //
 
-    const triangles = 160000;
+    const triangles = 1600;
 
     const geometry = new THREE.BufferGeometry();
 
