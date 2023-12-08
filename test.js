@@ -56,8 +56,8 @@ function init() {
   const controllerModelFactory = new XRControllerModelFactory();
 	const handModelFactory = new XRHandModelFactory();
 
-				// Hand 1
-	controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+	// Hand 1
+	const controllerGrip1 = renderer.xr.getControllerGrip( 0 );
 	controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
 	scene.add( controllerGrip1 );
 
