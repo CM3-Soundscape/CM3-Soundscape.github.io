@@ -4,6 +4,7 @@ let container;
 let audio1, audio2, audio3, audio4;
 let audioFile1, audioFile2, audioFile3, audioFile4;
 let analyzers;
+let geometry2;
 let isplaying = [false,false,false,false];
 let camera, scene, renderer;
 let listener;
@@ -193,11 +194,38 @@ function init() {
 
     //
 
-    renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    container.appendChild( renderer.domElement );
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.xr.enabled = true;
+  container.appendChild(renderer.domElement);
 
+  document.body.appendChild(VRButton.createButton(renderer));
+
+  controller1 = renderer.xr.getController(0);
+  controller1.addEventListener('select', onSelect);
+  scene.add(controller1);
+
+  const controllerModelFactory = new XRControllerModelFactory();
+	const handModelFactory = new XRHandModelFactory();
+
+	// Hand 1
+	const controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+	controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
+	scene.add( controllerGrip1 );
+
+	/* hand1 = renderer.xr.getHand( 0 );
+	hand1.add( handModelFactory.createHandModel( hand1 ) );
+
+	scene.add( hand1 ); */
+
+  const geometry2 = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+
+  const line = new THREE.Line( geometry2 );
+  line.name = 'line';
+  line.scale.z = 5;
+
+  controller1.add( line.clone() );
 
     //
 
@@ -218,6 +246,10 @@ function toggleAudio(audio, index) {
 	  audio.play();
 	  isplaying[index] = true;
 	}
+}
+
+function onSelect() {
+  toggleAudio(audio1, 0);
 }
 
 function onWindowResize() {
