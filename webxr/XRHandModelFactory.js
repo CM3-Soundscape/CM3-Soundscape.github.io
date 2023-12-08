@@ -1,6 +1,6 @@
 import {
 	Object3D
-} from 'three';
+} from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
 
 import {
 	XRHandPrimitiveModel
