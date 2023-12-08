@@ -5,7 +5,7 @@ import {XRControllerModelFactory} from './webxr/XRControllerModelFactory.js';
 import {XRHandModelFactory} from './webxr/XRHandModelFactory.js';
 
 let camera, scene, renderer;
-let controller;
+let controller1;
 let plane1, plane2, plane3, plane4; // New variables for the planes
 let planes = [plane1, plane2, plane3, plane4]; // Array to store the planes
 let planeMaterials; // Array to store materials for both planes
@@ -52,6 +52,10 @@ function init() {
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(VRButton.createButton(renderer));
+
+  controller1 = renderer.xr.getController(0);
+  controller1.addEventListener('select', onSelect);
+  scene.add(controller1);
 
   const controllerModelFactory = new XRControllerModelFactory();
 	const handModelFactory = new XRHandModelFactory();
@@ -158,9 +162,6 @@ function init() {
   plane4.rotateY(Math.PI / 4); // Rotate the plane 45 degrees
   scene.add(plane4);
 
-  controller = renderer.xr.getController(0);
-  controller.addEventListener('select', onSelect);
-  scene.add(controller);
 
   analyzers = [createAnalyzer(audio1), createAnalyzer(audio2), createAnalyzer(audio3), createAnalyzer(audio4)];
 
