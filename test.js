@@ -249,6 +249,18 @@ function init() {
 
   document.body.appendChild(VRButton.createButton(renderer));
 
+  const controllerModelFactory = new XRControllerModelFactory();
+	const handModelFactory = new XRHandModelFactory();
+
+				// Hand 1
+	controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+	controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
+	scene.add( controllerGrip1 );
+
+	hand1 = renderer.xr.getHand( 0 );
+	hand1.add( handModelFactory.createHandModel( hand1 ) );
+
+	scene.add( hand1 );
   // Initialize Web Audio API
   listener = new THREE.AudioListener();
 
