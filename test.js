@@ -65,6 +65,14 @@ function init() {
 	hand1.add( handModelFactory.createHandModel( hand1 ) );
 
 	scene.add( hand1 ); */
+
+  const geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+
+  const line = new THREE.Line( geometry );
+  line.name = 'line';
+  line.scale.z = 5;
+
+  controller1.add( line.clone() );
   // Initialize Web Audio API
   listener = new THREE.AudioListener();
 
