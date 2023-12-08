@@ -176,7 +176,7 @@ function createAnalyzer(audio) {
   
 
 function onSelect() {
-	const intersections = getIntersections(controller);
+	const intersections = getIntersections(controller1);
   
 	if (intersections.length > 0) {
 	  const intersectedObject = intersections[0].object;
@@ -208,13 +208,13 @@ function onSelect() {
 	}
   }
 
-  function getIntersections(controller) {
+  function getIntersections(controller1) {
 	const tempMatrix = new THREE.Matrix4();
 	const raycaster = new THREE.Raycaster();
 	const intersections = [];
   
 	// Update the raycaster with the controller's position and direction
-	const controllerMatrix = controller.matrixWorld;
+	const controllerMatrix = controller1.matrixWorld;
 	raycaster.ray.origin.setFromMatrixPosition(controllerMatrix);
 	raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix.identity().extractRotation(controllerMatrix));
   
