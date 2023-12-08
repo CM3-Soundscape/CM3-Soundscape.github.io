@@ -1,4 +1,7 @@
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+import {VRButton} from './webxr/VRButton.js';
+import {XRControllerModelFactory} from './webxr/XRControllerModelFactory.js';
+import {XRHandModelFactory} from './webxr/XRHandModelFactory.js';
 
 let container;
 let audio1, audio2, audio3, audio4;
