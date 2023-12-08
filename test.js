@@ -232,7 +232,7 @@ function init() {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
-  document.body.appendChild(ARButton.createButton(renderer));
+  document.body.appendChild(VRButton.createButton(renderer));
 
   // Initialize Web Audio API
   listener = new THREE.AudioListener();
