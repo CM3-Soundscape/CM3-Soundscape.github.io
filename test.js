@@ -46,8 +46,8 @@ function init() {
 
     const color = new THREE.Color();
 
-    const n = 800, n2 = n / 2;	// triangles spread in the cube
-    const d = 12, d2 = d / 2;	// individual triangle size
+    const n = 400, n2 = n / 2;	// triangles spread in the cube
+    const d = 24, d2 = d / 2;	// individual triangle size
 
     const pA = new THREE.Vector3();
     const pB = new THREE.Vector3();
