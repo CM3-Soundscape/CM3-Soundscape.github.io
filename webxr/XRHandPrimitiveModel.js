@@ -6,7 +6,7 @@ import {
 	InstancedMesh,
 	Matrix4,
 	Vector3
-} from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+} from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.module.js';
 
 const _matrix = new Matrix4();
 const _vector = new Vector3();
