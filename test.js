@@ -48,6 +48,7 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -65,10 +66,10 @@ function init() {
 	controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
 	scene.add( controllerGrip1 );
 
-	hand1 = renderer.xr.getHand( 0 );
+	/* hand1 = renderer.xr.getHand( 0 );
 	hand1.add( handModelFactory.createHandModel( hand1 ) );
 
-	scene.add( hand1 );
+	scene.add( hand1 ); */
 
   const geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
 
