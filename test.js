@@ -137,28 +137,28 @@ function init() {
   // Create the first plane and position it
   const geometry1 = new THREE.PlaneGeometry(0.5, 0.5);
   plane1 = new THREE.Mesh(geometry1, planeMaterials[0]);
-  plane1.position.set(-1, 1, -1); // Move the first plane to the left
+  plane1.position.set(-1, 0.5, -1); // Move the first plane to the left
   plane1.rotateY(Math.PI / 4); // Rotate the plane 45 degrees
   scene.add(plane1);
 
   // Create the second plane and position it
   const geometry2 = new THREE.ConeGeometry( 0.5, 1, 32 );;
   plane2 = new THREE.Mesh(geometry2, planeMaterials[1]);
-  plane2.position.set(1, 1, -1); // Move the second plane to the right
+  plane2.position.set(1, 0.5, -1); // Move the second plane to the right
   plane2.rotateY( - Math.PI / 4); // Rotate the plane -45 degrees
   scene.add(plane2);
 
   // Create the third plane and position it
   const geometry3 = new THREE.DodecahedronGeometry(0.5, 0);
   plane3 = new THREE.Mesh(geometry3, planeMaterials[2]);
-  plane3.position.set(-1, 1, 1); // Move the third plane to the left
+  plane3.position.set(-1, 0.5, 1); // Move the third plane to the left
   plane3.rotateY(-Math.PI / 4); // Rotate the plane -45 degrees
   scene.add(plane3);
 
   // Create the fourth plane and position it
   const geometry4 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
   plane4 = new THREE.Mesh(geometry4, planeMaterials[3]);
-  plane4.position.set(1, 1, 1); // Move the fourth plane to the right
+  plane4.position.set(1, 0.5, 1); // Move the fourth plane to the right
   plane4.rotateY(Math.PI / 4); // Rotate the plane 45 degrees
   scene.add(plane4);
 
