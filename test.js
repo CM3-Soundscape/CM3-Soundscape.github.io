@@ -3,7 +3,7 @@ import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/thr
 let container;
 
 let camera, scene, renderer;
-
+let listener;
 let mesh;
 
 init();
@@ -37,7 +37,7 @@ function init() {
     //
 
     // Initialize Web Audio API
-  const listener = new THREE.AudioListener();
+  listener = new THREE.AudioListener();
 
   // Create an Audio object and link it to the listener
   audio1 = new THREE.Audio(listener);
