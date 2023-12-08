@@ -36,6 +36,58 @@ function init() {
 
     //
 
+    // Initialize Web Audio API
+  listener = new THREE.AudioListener();
+
+  // Create an Audio object and link it to the listener
+  audio1 = new THREE.Audio(listener);
+  audio2 = new THREE.Audio(listener);
+  audio3 = new THREE.Audio(listener);
+  audio4 = new THREE.Audio(listener);
+
+  // Load an audio file
+  audioFile1 = './sounds/drums.mp3'; // Change to your audio file
+  audioFile2 = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
+  audioFile3 = './sounds/Audio 2 (Walking).mp3'; // Change to your audio file
+  audioFile4 = './sounds/Audio 3 - Korenmarkt.mp3'; // Change to your audio file
+
+  // Load audio using THREE.AudioLoader
+  const loader1 = new THREE.AudioLoader();
+  
+  loader1.load(audioFile1, function (buffer) {
+    audio1.setBuffer(buffer);
+    audio1.setLoop(true); // Set to true if you want the audio to loop
+    audio1.setVolume(0.5); // Adjust the volume if needed
+  });
+  const loader2 = new THREE.AudioLoader();
+  loader2.load(audioFile2, function (buffer) {
+	audio2.setBuffer(buffer);
+	audio2.setLoop(true); // Set to true if you want the audio to loop
+	audio2.setVolume(0.5); // Adjust the volume if needed
+  }
+  );
+  const loader3 = new THREE.AudioLoader();
+  loader3.load(audioFile3, function (buffer) {
+	audio3.setBuffer(buffer);
+	audio3.setLoop(true); // Set to true if you want the audio to loop
+	audio3.setVolume(0.5); // Adjust the volume if needed
+  }
+  );
+  const loader4 = new THREE.AudioLoader();
+  loader4.load(audioFile4, function (buffer) {
+	audio4.setBuffer(buffer);
+	audio4.setLoop(true); // Set to true if you want the audio to loop
+	audio4.setVolume(0.5); // Adjust the volume if needed
+  }
+  );
+
+  analyzers = [createAnalyzer(audio1), createAnalyzer(audio2), createAnalyzer(audio3), createAnalyzer(audio4)];
+
+  // Attach the listener to the camera
+  camera.add(listener);
+
+  //
+
     const triangles = 1600;
 
     const geometry = new THREE.BufferGeometry();
@@ -148,6 +200,21 @@ function init() {
 
     window.addEventListener( 'resize', onWindowResize );
 
+}
+
+function createAnalyzer(audio) {
+	const analyzer = new THREE.AudioAnalyser(audio, 32); // 32 frequency bands
+	return analyzer;
+}
+
+function toggleAudio(audio, index) {
+	if (isplaying[index]) {
+	  audio.pause();
+	  isplaying[index] = false;
+	} else {
+	  audio.play();
+	  isplaying[index] = true;
+	}
 }
 
 function onWindowResize() {
