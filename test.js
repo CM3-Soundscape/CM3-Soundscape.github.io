@@ -8,6 +8,7 @@ let audio1, audio2, audio3, audio4;
 let audioFile1, audioFile2, audioFile3, audioFile4;
 let analyzers;
 let geometry2;
+let controller1;
 let isplaying = [false,false,false,false];
 let camera, scene, renderer;
 let listener;
