@@ -37,7 +37,7 @@ function init() {
     //
 
     // Initialize Web Audio API
-  listener = new THREE.AudioListener();
+  const listener = new THREE.AudioListener();
 
   // Create an Audio object and link it to the listener
   audio1 = new THREE.Audio(listener);
