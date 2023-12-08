@@ -1,7 +1,10 @@
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
 
 let container;
-
+let audio1, audio2, audio3, audio4;
+let audioFile1, audioFile2, audioFile3, audioFile4;
+let analyzers;
+let isplaying = [false,false,false,false];
 let camera, scene, renderer;
 let listener;
 let mesh;
