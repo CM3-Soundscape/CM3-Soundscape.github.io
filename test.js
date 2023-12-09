@@ -96,7 +96,7 @@ function init() {
 
   //
 
-    const triangles = 1600;
+    const triangles = 1024;
 
     const geometry = new THREE.BufferGeometry();
 
@@ -106,8 +106,8 @@ function init() {
 
     const color = new THREE.Color();
 
-    const n = 400, n2 = n / 2;	// triangles spread in the cube
-    const d = 24, d2 = d / 2;	// individual triangle size
+    const n = 50, n2 = n / 2;	// triangles spread in the cube
+    const d = 5, d2 = d / 2;	// individual triangle size
 
     const pA = new THREE.Vector3();
     const pB = new THREE.Vector3();
@@ -232,7 +232,7 @@ function init() {
   controller1.add( line.clone() );
 
     //
-    scene.scale.set(0.1, 0.1, 0.1);
+    scene.scale.set(0.01, 0.01, 0.01);
     window.addEventListener( 'resize', onWindowResize );
 
 }
