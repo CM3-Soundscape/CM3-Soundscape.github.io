@@ -23,7 +23,7 @@ function init() {
 
     //
 
-    camera = new THREE.PerspectiveCamera( 27, window.innerWidth / window.innerHeight, 1, 3500 );
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
     camera.position.z = 50;
 
     scene = new THREE.Scene();
@@ -96,7 +96,7 @@ function init() {
 
   //
 
-    const triangles = 1024;
+    const triangles = 32;
 
     const geometry = new THREE.BufferGeometry();
 
@@ -106,8 +106,8 @@ function init() {
 
     const color = new THREE.Color();
 
-    const n = 50, n2 = n / 2;	// triangles spread in the cube
-    const d = 5, d2 = d / 2;	// individual triangle size
+    const n = 5, n2 = n / 2;	// triangles spread in the cube
+    const d = 0.5, d2 = d / 2;	// individual triangle size
 
     const pA = new THREE.Vector3();
     const pB = new THREE.Vector3();
@@ -186,7 +186,7 @@ function init() {
     geometry.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ).onUpload( disposeArray ) );
     geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ).onUpload( disposeArray ) );
 
-    geometry.computeBoundingSphere();
+    geometry.computeBoundingBox();
 
     const material = new THREE.MeshPhongMaterial( {
         color: 0xd5d5d5, specular: 0xffffff, shininess: 250,
