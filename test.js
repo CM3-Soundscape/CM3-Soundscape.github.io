@@ -269,9 +269,7 @@ function onWindowResize() {
 
 function animate() {
 
-    requestAnimationFrame( animate );
-
-    render();
+    renderer.setAnimationLoop(render);
 
 }
 
