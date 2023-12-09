@@ -27,12 +27,12 @@ function init() {
     camera.position.z = 50;
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0x050505 );
-    scene.fog = new THREE.Fog( 0x050505, 2000, 3500 );
+ /*    scene.background = new THREE.Color( 0x050505 );
+    scene.fog = new THREE.Fog( 0x050505, 2000, 3500 ); */
 
     //
 
-    scene.add( new THREE.AmbientLight( 0xcccccc ) );
+    /* scene.add( new THREE.AmbientLight( 0xcccccc ) );
 
     const light1 = new THREE.DirectionalLight( 0xffffff, 1.5 );
     light1.position.set( 1, 1, 1 );
@@ -40,7 +40,7 @@ function init() {
 
     const light2 = new THREE.DirectionalLight( 0xffffff, 4.5 );
     light2.position.set( 0, - 1, 0 );
-    scene.add( light2 );
+    scene.add( light2 ); */
 
     //
 
