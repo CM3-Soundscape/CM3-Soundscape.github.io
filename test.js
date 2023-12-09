@@ -232,7 +232,7 @@ function init() {
   controller1.add( line.clone() );
 
     //
-
+    scene.scale.set(0.1, 0.1, 0.1);
     window.addEventListener( 'resize', onWindowResize );
 
 }
