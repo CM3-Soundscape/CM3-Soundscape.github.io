@@ -274,11 +274,11 @@ function animate() {
 }
 
 function render() {
-
+/* 
     const time = Date.now() * 0.001;
 
     mesh.rotation.x = time * 0.25;
-    mesh.rotation.y = time * 0.5;
+    mesh.rotation.y = time * 0.5; */
 
     renderer.render( scene, camera );
 
