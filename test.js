@@ -206,7 +206,7 @@ function init() {
 
   document.body.appendChild(VRButton.createButton(renderer));
 
-  controller1 = renderer.xr.getController(0);
+  /* controller1 = renderer.xr.getController(0);
   controller1.addEventListener('select', onSelect);
   scene.add(controller1);
 
@@ -216,20 +216,20 @@ function init() {
 	// Hand 1
 	const controllerGrip1 = renderer.xr.getControllerGrip( 0 );
 	controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
-	scene.add( controllerGrip1 );
+	scene.add( controllerGrip1 ); */
 
 	/* hand1 = renderer.xr.getHand( 0 );
 	hand1.add( handModelFactory.createHandModel( hand1 ) );
 
 	scene.add( hand1 ); */
 
-  const geometry2 = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+  /* const geometry2 = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
 
   const line = new THREE.Line( geometry2 );
   line.name = 'line';
   line.scale.z = 5;
 
-  controller1.add( line.clone() );
+  controller1.add( line.clone() ); */
 
     //
     scene.scale.set(0.01, 0.01, 0.01);
