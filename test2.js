@@ -124,6 +124,8 @@ function init() {
     mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
+    //
+
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -132,8 +134,14 @@ function init() {
 
     document.body.appendChild(VRButton.createButton(renderer));
 
+    //
 
     window.addEventListener('resize', onWindowResize);
+
+    // XR setup
+    const xrButton = document.createElement('button');
+    xrButton.textContent = 'Enter VR';
+    document.body.appendChild(xrButton);
 
     let session = null;
 
@@ -203,6 +211,28 @@ function init() {
         camera.updateProjectionMatrix();
 
         renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function intersectObjects(controller) {
+        const intersections = getIntersections(controller);
+
+        if (intersections.length > 0) {
+            const intersection = intersections[0];
+            const object = intersection.object;
+
+            object.material.emissive.b = 1;
+            controller.attach(object);
+        }
+    }
+
+    function getIntersections(controller) {
+        tempMatrix.identity();
+        tempMatrix.multiplyMatrices(controller.matrixWorld, tempMatrix2.getInverse(controller.matrixWorld));
+
+        raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+        raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+        return raycaster.intersectObjects(scene.children);
     }
 }
 
