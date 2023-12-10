@@ -3,15 +3,10 @@ import {VRButton} from './webxr/VRButton.js';
 import {XRControllerModelFactory} from './webxr/XRControllerModelFactory.js';
 import {XRHandModelFactory} from './webxr/XRHandModelFactory.js';
 
-
 let container;
-
 let camera, scene, renderer;
-
 let controller1, controller2;
-
 let hand1, hand2;
-
 let mesh;
 
 init();
@@ -58,7 +53,6 @@ function init() {
 
     for (let i = 0; i < triangles; i++) {
         // positions
-
         const x = Math.random() * n - n2;
         const y = Math.random() * n - n2;
         const z = Math.random() * n - n2;
@@ -75,19 +69,18 @@ function init() {
         const cy = y + Math.random() * d - d2;
         const cz = z + Math.random() * d - d2;
 
-        positions.push( ax, ay, az );
-        positions.push( bx, by, bz );
-        positions.push( cx, cy, cz );
+        positions.push(ax, ay, az);
+        positions.push(bx, by, bz);
+        positions.push(cx, cy, cz);
 
         // flat face normals
+        pA.set(ax, ay, az);
+        pB.set(bx, by, bz);
+        pC.set(cx, cy, cz);
 
-        pA.set( ax, ay, az );
-        pB.set( bx, by, bz );
-        pC.set( cx, cy, cz );
-
-        cb.subVectors( pC, pB );
-        ab.subVectors( pA, pB );
-        cb.cross( ab );
+        cb.subVectors(pC, pB);
+        ab.subVectors(pA, pB);
+        cb.cross(ab);
 
         cb.normalize();
 
@@ -95,23 +88,22 @@ function init() {
         const ny = cb.y;
         const nz = cb.z;
 
-        normals.push( nx, ny, nz );
-        normals.push( nx, ny, nz );
-        normals.push( nx, ny, nz );
+        normals.push(nx, ny, nz);
+        normals.push(nx, ny, nz);
+        normals.push(nx, ny, nz);
 
         // colors
+        const vx = (x / n) + 0.5;
+        const vy = (y / n) + 0.5;
+        const vz = (z / n) + 0.5;
 
-        const vx = ( x / n ) + 0.5;
-        const vy = ( y / n ) + 0.5;
-        const vz = ( z / n ) + 0.5;
-
-        color.setRGB( vx, vy, vz );
+        color.setRGB(vx, vy, vz);
 
         const alpha = Math.random();
 
-        colors.push( color.r, color.g, color.b, alpha );
-        colors.push( color.r, color.g, color.b, alpha );
-        colors.push( color.r, color.g, color.b, alpha );
+        colors.push(color.r, color.g, color.b, alpha);
+        colors.push(color.r, color.g, color.b, alpha);
+        colors.push(color.r, color.g, color.b, alpha);
     }
 
     function disposeArray() {
@@ -132,128 +124,56 @@ function init() {
     mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    //
-
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-
-    //
-
     window.addEventListener('resize', onWindowResize);
 
     // XR setup
     const xrButton = document.createElement('button');
+    xrButton.textContent = 'Enter VR';
     document.body.appendChild(xrButton);
 
-    xrButton.style.display = 'none';
+    let session = null;
 
-    navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
-        supported ? xrButton.style.display = '' : xrButton.style.display = 'none';
-    });
-
-    xrButton.addEventListener('click', toggleXR);
-
-    function toggleXR() {
+    xrButton.addEventListener('click', () => {
         if (session === null) {
             navigator.xr.requestSession('immersive-vr').then(onSessionStarted);
         } else {
             session.end();
         }
-    }
+    });
 
     function onSessionStarted(session) {
         xrButton.textContent = 'Exit VR';
-
         session.addEventListener('end', onSessionEnded);
 
         renderer.xr.setReferenceSpaceType('local');
         renderer.xr.setSession(session);
 
         session.requestReferenceSpace('local').then((referenceSpace) => {
-            const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
-            const line = new THREE.Line(geometry);
-            line.scale.z = 5;
+            const pose = frame.getViewerPose(referenceSpace);
 
-            controller1 = renderer.xr.getController(0);
-            controller1.addEventListener('selectstart', onSelectStart);
-            controller1.addEventListener('selectend', onSelectEnd);
-            controller1.add(line.clone());
-            scene.add(controller1);
+            if (pose) {
+                const xrCamera = renderer.xr.getCamera(camera);
+                xrCamera.position.copy(pose.transform.position);
+                xrCamera.quaternion.copy(pose.transform.orientation);
+            }
 
-            controller2 = renderer.xr.getController(1);
-            controller2.addEventListener('selectstart', onSelectStart);
-            controller2.addEventListener('selectend', onSelectEnd);
-            controller2.add(line.clone());
-            scene.add(controller2);
-
-            const controllerModelFactory = new XRControllerModelFactory();
-            const handModelFactory = new XRHandModelFactory();
-
-            hand1 = renderer.xr.getHand(0);
-            hand1.add(controllerModelFactory.createControllerModel(controller1));
-            hand1.add(handModelFactory.createHandModel(hand1));
-            scene.add(hand1);
-
-            hand2 = renderer.xr.getHand(1);
-            hand2.add(controllerModelFactory.createControllerModel(controller2));
-            hand2.add(handModelFactory.createHandModel(hand2));
-            scene.add(hand2);
-
-            session.requestAnimationFrame(onXRFrame);
+            renderer.setAnimationLoop((time, frame) => {
+                onXRFrame(time, frame, referenceSpace);
+            });
         });
     }
 
     function onSessionEnded() {
         xrButton.textContent = 'Enter VR';
+        session = null;
     }
 
-    function onSelectStart(event) {
-        const controller = event.target;
-
-        const intersections = getIntersections(controller);
-
-        if (intersections.length > 0) {
-            const intersection = intersections[0];
-            const object = intersection.object;
-
-            object.material.emissive.b = 1;
-            controller.attach(object);
-        }
-    }
-
-    function onSelectEnd(event) {
-        const controller = event.target;
-
-        if (controller.userData.selected !== undefined) {
-            const object = controller.userData.selected;
-            object.material.emissive.b = 0;
-            scene.attach(object);
-        }
-    }
-
-    function getIntersections(controller) {
-        tempMatrix.identity();
-        tempMatrix.multiplyMatrices(controller.matrixWorld, tempMatrix2.getInverse(controller.matrixWorld));
-
-        raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-        raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
-
-        return raycaster.intersectObjects(scene.children);
-    }
-
-    function intersectObjects(controller) {
-        const intersections = getIntersections(controller);
-
-        if (intersections.length > 0) {
-            const intersection = intersections[0];
-            controller.userData.selected = intersection.object;
-        }
-    }
-
-    function onXRFrame(time, frame) {
+    function onXRFrame(time, frame, referenceSpace) {
         const session = frame.session;
 
         if (session) {
@@ -278,28 +198,23 @@ function init() {
             renderer.render(scene, camera);
         }
     }
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
 }
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-//
 
 function animate() {
     requestAnimationFrame(animate);
-
     render();
 }
 
 function render() {
     const time = Date.now() * 0.001;
-
     mesh.rotation.x = time * 0.25;
     mesh.rotation.y = time * 0.5;
-
     renderer.render(scene, camera);
 }
