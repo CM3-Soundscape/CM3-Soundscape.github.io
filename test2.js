@@ -4,7 +4,7 @@ import {XRControllerModelFactory} from './webxr/XRControllerModelFactory.js';
 import {XRHandModelFactory} from './webxr/XRHandModelFactory.js';
 
 
-let container, stats;
+let container;
 
 let camera, scene, renderer;
 
@@ -57,11 +57,61 @@ function init() {
     const ab = new THREE.Vector3();
 
     for (let i = 0; i < triangles; i++) {
-        // ...
+        // positions
 
-        // Positions, normals, and colors generation remain the same.
+        const x = Math.random() * n - n2;
+        const y = Math.random() * n - n2;
+        const z = Math.random() * n - n2;
 
-        // ...
+        const ax = x + Math.random() * d - d2;
+        const ay = y + Math.random() * d - d2;
+        const az = z + Math.random() * d - d2;
+
+        const bx = x + Math.random() * d - d2;
+        const by = y + Math.random() * d - d2;
+        const bz = z + Math.random() * d - d2;
+
+        const cx = x + Math.random() * d - d2;
+        const cy = y + Math.random() * d - d2;
+        const cz = z + Math.random() * d - d2;
+
+        positions.push( ax, ay, az );
+        positions.push( bx, by, bz );
+        positions.push( cx, cy, cz );
+
+        // flat face normals
+
+        pA.set( ax, ay, az );
+        pB.set( bx, by, bz );
+        pC.set( cx, cy, cz );
+
+        cb.subVectors( pC, pB );
+        ab.subVectors( pA, pB );
+        cb.cross( ab );
+
+        cb.normalize();
+
+        const nx = cb.x;
+        const ny = cb.y;
+        const nz = cb.z;
+
+        normals.push( nx, ny, nz );
+        normals.push( nx, ny, nz );
+        normals.push( nx, ny, nz );
+
+        // colors
+
+        const vx = ( x / n ) + 0.5;
+        const vy = ( y / n ) + 0.5;
+        const vz = ( z / n ) + 0.5;
+
+        color.setRGB( vx, vy, vz );
+
+        const alpha = Math.random();
+
+        colors.push( color.r, color.g, color.b, alpha );
+        colors.push( color.r, color.g, color.b, alpha );
+        colors.push( color.r, color.g, color.b, alpha );
     }
 
     function disposeArray() {
@@ -89,10 +139,6 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-    //
-
-    stats = new Stats();
-    container.appendChild(stats.dom);
 
     //
 
@@ -247,7 +293,6 @@ function animate() {
     requestAnimationFrame(animate);
 
     render();
-    stats.update();
 }
 
 function render() {
