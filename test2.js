@@ -124,17 +124,16 @@ function init() {
     mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.xr.enabled = true;
     container.appendChild(renderer.domElement);
 
-    window.addEventListener('resize', onWindowResize);
+    document.body.appendChild(VRButton.createButton(renderer));
 
-    // XR setup
-    const xrButton = document.createElement('button');
-    xrButton.textContent = 'Enter VR';
-    document.body.appendChild(xrButton);
+
+    window.addEventListener('resize', onWindowResize);
 
     let session = null;
 
