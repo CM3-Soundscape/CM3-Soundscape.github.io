@@ -82,7 +82,7 @@ function init() {
   controller1.add(line.clone());
   controller2.add(line.clone());
 
-  const particles = 50000;
+  const particles = 5000;
 
   const geometry2 = new THREE.BufferGeometry();
 
