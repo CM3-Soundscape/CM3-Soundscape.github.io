@@ -10,9 +10,8 @@ let isplaying = false;
 let audio;
 let audioFile;
 let listener;
-let audioAnalyser;
-let frequencyData;
 let averageFrequency = 0;
+let audioAnalyser;
 
 init();
 animate();
@@ -132,20 +131,16 @@ function init() {
   audio = new THREE.Audio(listener);
   audioFile = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
   const loader = new THREE.AudioLoader();
-  
   loader.load(audioFile, function (buffer) {
     audio.setBuffer(buffer);
     audio.setLoop(true); // Set to true if you want the audio to loop
     audio.setVolume(0.5); // Adjust the volume if needed
-
-    // Create an analyser and connect it to the audio
-    audioAnalyser = new THREE.AudioAnalyser(audio, 32);
-    frequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
-
-    // Start playing the audio
-    audio.play();
   });
+  audio.pause();
+  const audioAnalyser = new THREE.AudioAnalyser(audio, 32);
   
+  camera.add(listener);
+
   window.addEventListener('resize', onWindowResize);
 }
 
@@ -204,7 +199,7 @@ function animate() {
 
 function render() {
   // Update the average frequency
-  const dataArray = analyzer.getFrequencyData();
+  const dataArray = audioAnalyser.getFrequencyData();
 	
   // Calculate the average frequency to determine color
   const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
