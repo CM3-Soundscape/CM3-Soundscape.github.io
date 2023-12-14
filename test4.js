@@ -6,14 +6,7 @@ import {XRHandModelFactory} from './webxr/XRHandModelFactory.js';
 
 let camera, scene, renderer;
 let controller1;
-let plane1, plane2, plane3, plane4; // New variables for the planes
-let planes = [plane1, plane2, plane3, plane4]; // Array to store the planes
-let planeMaterials; // Array to store materials for both planes
-let listener;
-let audio1, audio2, audio3, audio4;
-let audioFile1, audioFile2, audioFile3, audioFile4;
-let analyzers;
-let isplaying = [false,false,false,false];
+let points;
 
 init();
 animate();
