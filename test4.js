@@ -107,7 +107,7 @@ function init() {
   geometry2.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
   geometry2.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
 
-  geometry2.computeBoundingSphere();
+  //geometry2.computeBoundingSphere();
 
   //
 
