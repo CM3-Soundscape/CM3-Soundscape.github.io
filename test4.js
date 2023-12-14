@@ -8,6 +8,7 @@ let controller1;
 let points;
 let isplaying = false;
 let audio;
+let audioFile;
 let listener;
 
 init();
@@ -117,13 +118,13 @@ function init() {
   audioFile = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
   const loader = new THREE.AudioLoader();
   
-  loader.load(audioFile1, function (buffer) {
+  loader.load(audioFile, function (buffer) {
     audio.setBuffer(buffer);
     audio.setLoop(true); // Set to true if you want the audio to loop
     audio.setVolume(0.5); // Adjust the volume if needed
   });
   audio.pause();
-  
+
   window.addEventListener('resize', onWindowResize);
 }
 
