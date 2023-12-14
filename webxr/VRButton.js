@@ -12,8 +12,8 @@ class VRButton {
 
 				session.addEventListener( 'end', onSessionEnded );
 
-				await renderer.xr.setSession( session );
-				button.textContent = 'EXIT VR';
+				//await renderer.xr.setSession( session );
+				//button.textContent = 'EXIT VR';
 
 				currentSession = session;
 
