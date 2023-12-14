@@ -4,7 +4,7 @@ import { XRControllerModelFactory } from './webxr/XRControllerModelFactory.js';
 import { XRHandModelFactory } from './webxr/XRHandModelFactory.js';
 
 let camera, scene, renderer;
-let controller1;
+let controller1, controller2;
 let points;
 let isplaying = false;
 let audio;
@@ -50,8 +50,14 @@ function init() {
   document.body.appendChild(VRButton.createButton(renderer));
 
   controller1 = renderer.xr.getController(0);
-  controller1.addEventListener('select', onSelect);
+  controller1.addEventListener('selectstart', onSelectStart);
+  controller1.addEventListener('selectend', onSelectEnd);
   scene.add(controller1);
+
+  controller2 = renderer.xr.getController(1);
+  controller2.addEventListener('selectstart', onSelectStart);
+  controller2.addEventListener('selectend', onSelectEnd);
+  scene.add(controller2);
 
   const controllerModelFactory = new XRControllerModelFactory();
 
@@ -60,6 +66,11 @@ function init() {
   controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
   scene.add(controllerGrip1);
 
+  // Hand 2
+  const controllerGrip2 = renderer.xr.getControllerGrip(1);
+  controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
+  scene.add(controllerGrip2);
+
   const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
 
   const line = new THREE.Line(geometry);
@@ -67,6 +78,7 @@ function init() {
   line.scale.z = 5;
 
   controller1.add(line.clone());
+  controller2.add(line.clone());
 
   const particles = 50;
 
@@ -77,15 +89,15 @@ function init() {
 
   const color = new THREE.Color();
 
-  const n = 4; // distribute points in a larger cube
+  const n = 1; // distribute points in a cube of size 1 around (-1, 0.5, -1)
 
   for (let i = 0; i < particles; i++) {
 
     // positions
 
-    const x = (Math.random() - 0.5) * n;
-    const y = Math.random() * n;
-    const z = (Math.random() - 0.5) * n;
+    const x = (Math.random() - 0.5) * n - 1;
+    const y = Math.random() * n + 0.5;
+    const z = (Math.random() - 0.5) * n - 1;
 
     positions.push(x, y, z);
 
@@ -128,20 +140,49 @@ function init() {
   window.addEventListener('resize', onWindowResize);
 }
 
-function onSelect() {
-  // Handle the selection event here if needed
-  toggleAudio(audio);
+function onSelectStart(event) {
+  const controller = event.target;
+  const intersections = getIntersections(controller);
+  if (intersections.length > 0) {
+    const intersection = intersections[0];
+    toggleAudio(audio);
+  }
+}
+
+function onSelectEnd() {
+  // Handle the selectend event here if needed
 }
 
 function toggleAudio(audio) {
-	if (isplaying) {
-	  audio.pause();
-	  isplaying = false;
-	} else {
-	  audio.play();
-	  isplaying = true;
-	}
+  if (isplaying) {
+    audio.pause();
+    isplaying = false;
+  } else {
+    audio.play();
+    isplaying = true;
+  }
 }
+
+function getIntersections(controller) {
+  const tempMatrix = new THREE.Matrix4();
+  const direction = new THREE.Vector3();
+  const raycaster = new THREE.Raycaster();
+  const intersections = [];
+
+  controller.getWorldDirection(direction);
+  raycaster.set(controller.position, direction.negate());
+
+  // Check for intersection with points
+  const intersectedObjects = [points];
+  const intersects = raycaster.intersectObjects(intersectedObjects);
+
+  if (intersects.length > 0) {
+    intersections.push(intersects[0]);
+  }
+
+  return intersections;
+}
+
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
