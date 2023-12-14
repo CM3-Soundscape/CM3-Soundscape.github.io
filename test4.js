@@ -71,7 +71,7 @@ function init() {
 
   controller1.add( line.clone() );
 
-  const particles = 500000;
+  const particles = 50;
 
   const geometry2 = new THREE.BufferGeometry();
 
@@ -80,7 +80,7 @@ function init() {
 
   const color = new THREE.Color();
 
-  const n = 1000, n2 = n / 2; // particles spread in the cube
+  const n = 1, n2 = n / 2; // particles spread in the cube
 
   for ( let i = 0; i < particles; i ++ ) {
 
