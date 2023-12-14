@@ -204,11 +204,13 @@ function animate() {
 
 function render() {
   // Update the average frequency
-  audioAnalyser.getFrequencyData(frequencyData);
-  averageFrequency = frequencyData.reduce((a, b) => a + b, 0) / frequencyData.length / 255;
-
+  const dataArray = analyzer.getFrequencyData();
+	
+  // Calculate the average frequency to determine color
+  const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
+  const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
   // Update the color of the points based on the average frequency
-  points.material.color.setRGB(averageFrequency, averageFrequency, averageFrequency);
+  points.material.color = color;
 
   renderer.render(scene, camera);
 }
