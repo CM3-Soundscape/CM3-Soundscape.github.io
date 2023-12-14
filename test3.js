@@ -220,8 +220,8 @@ function init() {
     geometry_buffer.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
     geometry_buffer.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ) );
 
-    geometry_buffer.computeBoundingSphere();
-    const test_material = new THREE.MeshBasicMaterial({ color: 0xd5d5d5, side: THREE.DoubleSide})
+    //geometry_buffer.computeBoundingSphere();
+    const test_material = new THREE.MeshBasicMaterial({ color: 0xd5d5d5, side: THREE.DoubleSide, vertexColors: true, transparent: true})
     /* const material = new THREE.MeshPhongMaterial( {
         color: 0xd5d5d5, specular: 0xffffff, shininess: 250,
         side: THREE.DoubleSide, vertexColors: true, transparent: true
