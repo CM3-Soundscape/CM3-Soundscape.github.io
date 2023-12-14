@@ -215,15 +215,10 @@ function init() {
 
     }
 
-    function disposeArray() {
 
-        this.array = null;
-
-    }
-
-    geometry_buffer.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ).onUpload( disposeArray ) );
-    geometry_buffer.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ).onUpload( disposeArray ) );
-    geometry_buffer.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ).onUpload( disposeArray ) );
+    geometry_buffer.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
+    geometry_buffer.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
+    geometry_buffer.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ) );
 
     geometry_buffer.computeBoundingSphere();
     const test_material = new THREE.MeshBasicMaterial({ color: 0xd5d5d5, side: THREE.DoubleSide})
