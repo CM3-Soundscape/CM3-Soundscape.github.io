@@ -11,7 +11,7 @@ let audio;
 let audioFile;
 let listener;
 let averageFrequency = 0;
-let audioAnalyser;
+let analyser;
 
 init();
 animate();
@@ -124,6 +124,7 @@ function init() {
   scene.add(points);
 
   //
+  
 
   listener = new THREE.AudioListener();
 
@@ -137,8 +138,9 @@ function init() {
     audio.setVolume(0.5); // Adjust the volume if needed
   });
   audio.pause();
-  const audioAnalyser = new THREE.AudioAnalyser(audio, 32);
   
+  analyser = new THREE.AudioAnalyser(audio, 32);
+
   camera.add(listener);
 
   window.addEventListener('resize', onWindowResize);
@@ -199,7 +201,7 @@ function animate() {
 
 function render() {
   // Update the average frequency
-  const dataArray = audioAnalyser.getFrequencyData();
+  const dataArray = analyser.getFrequencyData();
 	
   // Calculate the average frequency to determine color
   const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
