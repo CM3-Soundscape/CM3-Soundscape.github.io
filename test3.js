@@ -261,7 +261,11 @@ function init() {
 
   analyzers = [createAnalyzer(audio1), createAnalyzer(audio2), createAnalyzer(audio3), createAnalyzer(audio4)];
 
-
+  const xrSession = renderer.xr.getSession();
+  if (xrSession) {
+    const baseLayer = new XRWebGLLayer(xrSession, renderer);
+    xrSession.updateRenderState({ baseLayer: baseLayer });
+  }
   window.addEventListener('resize', onWindowResize);
 }
 
