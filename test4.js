@@ -8,6 +8,7 @@ let controller1;
 let points;
 let isplaying = false;
 let audio;
+let listener;
 
 init();
 animate();
@@ -52,7 +53,6 @@ function init() {
   scene.add(controller1);
 
   const controllerModelFactory = new XRControllerModelFactory();
-  const handModelFactory = new XRHandModelFactory();
 
   // Hand 1
   const controllerGrip1 = renderer.xr.getControllerGrip(0);
@@ -103,7 +103,7 @@ function init() {
   geometry2.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-  const material = new THREE.PointsMaterial({ size: 0.1, vertexColors: true });
+  const material = new THREE.PointsMaterial({ size: 0.01, vertexColors: true });
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
@@ -122,7 +122,8 @@ function init() {
     audio.setLoop(true); // Set to true if you want the audio to loop
     audio.setVolume(0.5); // Adjust the volume if needed
   });
-
+  audio.pause();
+  
   window.addEventListener('resize', onWindowResize);
 }
 
