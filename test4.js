@@ -113,7 +113,7 @@ function init() {
 
   const material = new THREE.PointsMaterial( { size: 15, vertexColors: true } );
 
-  points = new THREE.Points( geometry2, material );
+  const points = new THREE.Points( geometry2, material );
   scene.add( points );
 
   //
