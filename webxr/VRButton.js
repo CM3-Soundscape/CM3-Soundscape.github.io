@@ -12,7 +12,7 @@ class VRButton {
 
 				session.addEventListener( 'end', onSessionEnded );
 
-				renderer.xr.setSession( session );
+				await renderer.xr.setSession( session );
 				button.textContent = 'EXIT VR';
 
 				currentSession = session;
