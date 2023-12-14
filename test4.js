@@ -74,15 +74,15 @@ function init() {
 
   const color = new THREE.Color();
 
-  const n = 0.02, n2 = n / 2; // particles spread in the cube
+  const n = 4; // distribute points in a larger cube
 
   for (let i = 0; i < particles; i++) {
 
     // positions
 
-    const x = Math.random() * n - n2;
-    const y = Math.random() * n - n2;
-    const z = Math.random() * n - n2;
+    const x = (Math.random() - 0.5) * n;
+    const y = Math.random() * n;
+    const z = (Math.random() - 0.5) * n;
 
     positions.push(x, y, z);
 
@@ -101,7 +101,7 @@ function init() {
   geometry2.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-  const material = new THREE.PointsMaterial({ size: 1, vertexColors: true });
+  const material = new THREE.PointsMaterial({ size: 0.1, vertexColors: true });
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
