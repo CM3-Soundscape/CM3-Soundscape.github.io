@@ -9,6 +9,7 @@ let plane1, plane2, plane3, plane4; // New variables for the planes
 let planes = [plane1, plane2, plane3, plane4]; // Array to store the planes
 let planeMaterials; // Array to store materials for both planes
 let mesh;
+let test_material;
 let listener;
 let audio1, audio2, audio3, audio4;
 let audioFile1, audioFile2, audioFile3, audioFile4;
@@ -225,13 +226,13 @@ function init() {
     geometry_buffer.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 4 ).onUpload( disposeArray ) );
 
     geometry_buffer.computeBoundingSphere();
-
-    const material = new THREE.MeshPhongMaterial( {
+    const test_material = new THREE.MeshBasicMaterial({ color: 0xd5d5d5, side: THREE.DoubleSide, vertexColors: true })
+    /* const material = new THREE.MeshPhongMaterial( {
         color: 0xd5d5d5, specular: 0xffffff, shininess: 250,
         side: THREE.DoubleSide, vertexColors: true, transparent: true
     } );
-
-    mesh = new THREE.Mesh( geometry_buffer, material );
+ */
+    mesh = new THREE.Mesh( geometry_buffer, test_material );
     scene.add( mesh );
 
   // Create the first plane and position it
