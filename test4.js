@@ -29,10 +29,10 @@ function init() {
   const light = new THREE.DirectionalLight(0xffffff, 3);
   light.position.set(0, 6, 0);
   light.castShadow = true;
-  light.shadow.camera.top = 2;
-  light.shadow.camera.bottom = -2;
-  light.shadow.camera.right = 2;
-  light.shadow.camera.left = -2;
+  light.shadow.camera.top = 10;
+  light.shadow.camera.bottom = -10;
+  light.shadow.camera.right = 10;
+  light.shadow.camera.left = -10;
   light.shadow.mapSize.set(4096, 4096);
   scene.add(light);
 
@@ -200,14 +200,24 @@ function animate() {
 }
 
 function render() {
-  // Update the average frequency
-  const dataArray = analyser.getFrequencyData();
-	
-  // Calculate the average frequency to determine color
-  const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
-  const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
-  // Update the color of the points based on the average frequency
-  points.material.color = color;
-
-  renderer.render(scene, camera);
-}
+    // Update the average frequency
+    const dataArray = analyser.getFrequencyData();
+  
+    // Calculate the average frequency to determine color
+    const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
+  
+    // Map the average frequency to a color gradient
+    const color = mapFrequencyToColor(averageFrequency);
+    points.material.color = color;
+  
+    renderer.render(scene, camera);
+  }
+  
+  function mapFrequencyToColor(frequency) {
+    // Map the frequency to a color gradient
+    const hue = (frequency / 255) * 0.8; // Adjust the factor to control color range
+    const saturation = 1.0;
+    const lightness = 0.5;
+  
+    return new THREE.Color().setHSL(hue, saturation, lightness);
+  }
