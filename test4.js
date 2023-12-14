@@ -10,6 +10,9 @@ let isplaying = false;
 let audio;
 let audioFile;
 let listener;
+let audioAnalyser;
+let frequencyData;
+let averageFrequency = 0;
 
 init();
 animate();
@@ -134,9 +137,15 @@ function init() {
     audio.setBuffer(buffer);
     audio.setLoop(true); // Set to true if you want the audio to loop
     audio.setVolume(0.5); // Adjust the volume if needed
-  });
-  audio.pause();
 
+    // Create an analyser and connect it to the audio
+    audioAnalyser = new THREE.AudioAnalyser(audio, 32);
+    frequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
+
+    // Start playing the audio
+    audio.play();
+  });
+  
   window.addEventListener('resize', onWindowResize);
 }
 
@@ -194,5 +203,12 @@ function animate() {
 }
 
 function render() {
+  // Update the average frequency
+  audioAnalyser.getFrequencyData(frequencyData);
+  averageFrequency = frequencyData.reduce((a, b) => a + b, 0) / frequencyData.length / 255;
+
+  // Update the color of the points based on the average frequency
+  points.material.color.setRGB(averageFrequency, averageFrequency, averageFrequency);
+
   renderer.render(scene, camera);
 }
