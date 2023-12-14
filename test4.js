@@ -80,7 +80,7 @@ function init() {
 
   const color = new THREE.Color();
 
-  const n = 1, n2 = n / 2; // particles spread in the cube
+  const n = 0.02, n2 = n / 2; // particles spread in the cube
 
   for ( let i = 0; i < particles; i ++ ) {
 
