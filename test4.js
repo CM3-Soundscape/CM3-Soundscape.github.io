@@ -6,6 +6,8 @@ import { XRHandModelFactory } from './webxr/XRHandModelFactory.js';
 let camera, scene, renderer;
 let controller1;
 let points;
+let isplaying = false;
+let audio;
 
 init();
 animate();
@@ -108,13 +110,36 @@ function init() {
 
   //
 
+  listener = new THREE.AudioListener();
+
+  // Create an Audio object and link it to the listener
+  audio = new THREE.Audio(listener);
+  audioFile = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
+  const loader = new THREE.AudioLoader();
+  
+  loader.load(audioFile1, function (buffer) {
+    audio.setBuffer(buffer);
+    audio.setLoop(true); // Set to true if you want the audio to loop
+    audio.setVolume(0.5); // Adjust the volume if needed
+  });
+
   window.addEventListener('resize', onWindowResize);
 }
 
 function onSelect() {
   // Handle the selection event here if needed
+  toggleAudio(audio);
 }
 
+function toggleAudio(audio) {
+	if (isplaying) {
+	  audio.pause();
+	  isplaying = false;
+	} else {
+	  audio.play();
+	  isplaying = true;
+	}
+}
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
