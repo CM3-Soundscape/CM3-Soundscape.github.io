@@ -227,7 +227,7 @@ function render() {
 
   function mapFrequencyToColor(frequency) {
     // Map the frequency to a color gradient
-    const hue = (frequency / 255) * 10; // Adjust the factor to control color range
+    const hue = (frequency / 255) * 1; // Adjust the factor to control color range
   
     return new THREE.Color().setRGB(hue, hue, hue);
   }
