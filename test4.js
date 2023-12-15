@@ -216,7 +216,7 @@ function render() {
   
 
     // Adjust the scaling factor for responsiveness
-  const scaledFactor = averageFrequency * 2;
+  const scaledFactor = (averageFrequency/255) * 2;
 
     // Update the position of each point based on the scaled amplitude
   for (let i = 0; i < positionsAttribute.count; i++) {
