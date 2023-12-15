@@ -16,6 +16,9 @@ let geometry2;
 let positions_original;
 let position_i;
 let xyz_original;
+let xOriginal;
+let yOriginal;
+let zOriginal;
 
 init();
 animate();
@@ -122,6 +125,9 @@ function init() {
   geometry2.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   positions_original = geometry2.getAttribute('position');
+  xOriginal = positions_original.getX(i);
+  yOriginal = positions_original.getY(i);
+  zOriginal = positions_original.getZ(i);
 
   const material = new THREE.PointsMaterial({ size: 0.1, vertexColors: true });
 
@@ -228,10 +234,6 @@ function render() {
   var vibration = normalize(averageFrequency, minOriginal, maxOriginal);
 
   for (let i=0; i<positionsAttribute.count; i++) {
-    const xOriginal = positions_original.getX(i);
-    const yOriginal = positions_original.getY(i);
-    const zOriginal = positions_original.getZ(i);
-
     // Update the position based on the original position and vibration
     positionsAttribute.setX(i, xOriginal + vibration);
     positionsAttribute.setY(i, yOriginal + vibration);
