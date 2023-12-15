@@ -224,14 +224,10 @@ function animate() {
     const y = positions_original.array[i * 3 + 1];
     const z = positions_original.array[i * 3 + 2];
 
-    // Use sine and cosine functions to create a vibration effect
-    const vibrationAmount = 0.1; // Adjust this value to control the intensity of the vibration
-    const vibrationSpeed = 0.1; // Adjust this value to control the speed of the vibration
-
-    const vibration = Math.sin(i * 0.1 + averageFrequency * vibrationSpeed) * vibrationAmount;
+    const vibration = averageFrequency/255 ;
 
     // Update the y-coordinate based on the vibration
-    positionsAttribute.setXYZ(i, x, y + vibration, z);
+    positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z + vibration);
   }
 
   // Mark the positions attribute as needing an update
