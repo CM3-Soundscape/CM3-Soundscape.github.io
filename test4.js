@@ -235,9 +235,9 @@ function render() {
     z_original = positions_original.getZ(i);
 
     // Update the position based on the original position and vibration
-    positionsAttribute.setX(i, x_original + vibration);
-    positionsAttribute.setY(i, y_original + vibration);
-    positionsAttribute.setZ(i, z_original + vibration);
+    positionsAttribute.setX(i, x_original + 0.1);
+    positionsAttribute.setY(i, y_original + 0.1);
+    positionsAttribute.setZ(i, z_original + 0.1);
   }
 /*
   for (let i = 0; i < geometry2.count; i++) {
