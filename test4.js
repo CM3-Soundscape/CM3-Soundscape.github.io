@@ -207,6 +207,8 @@ function animate() {
 }
 
 function render() {
+  //check if analyser needs update?
+
   // Update the average frequency
   const dataArray = analyser.getFrequencyData();
   const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
@@ -235,29 +237,10 @@ function render() {
     z_original = positions_original.getZ(i);
 
     // Update the position based on the original position and vibration
-    positionsAttribute.setX(i, x_original + 0.1);
-    positionsAttribute.setY(i, y_original + 0.1);
-    positionsAttribute.setZ(i, z_original + 0.1);
+    positionsAttribute.setX(i, x_original + vibration);
+    positionsAttribute.setY(i, y_original + vibration);
+    positionsAttribute.setZ(i, z_original + vibration);
   }
-/*
-  for (let i = 0; i < geometry2.count; i++) {
-
-  }
-
-  /*
-    // Update the position of each point based on the scaled amplitude
-  for (let i = 0; i < positionsAttribute.count; i++) {
-      const x = positionsAttribute.getX(i);
-      const x2 = normalize(x, 0, 1);
-      const y = positionsAttribute.getY(i);
-      const y2 = normalize(y, 0, 1);
-      const z = positionsAttribute.getZ(i);
-      const z2 = normalize(z, 0, 1);
-      // Update the position based on the scaled amplitude
-      positionsAttribute.setXYZ(i, x2 +vibration, y2 + vibration, z2 + vibration);
-    }
-*/
-    
   // Mark the colors attribute as needing an update
   colorsAttribute.needsUpdate = true;
   // Mark the positions attribute as needing an update
