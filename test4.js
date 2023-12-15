@@ -130,7 +130,8 @@ function init() {
   points = new THREE.Points(geometry2, material);
   scene.add(points);
   positions_original = points.geometry.getAttribute('position');
-  Object.freeze(positions_original.array);
+  const positions_fixed = positions_original.clone();
+  Object.freeze(positions_fixed);
   //
   
 
@@ -231,9 +232,9 @@ function render() {
   }
   for (let i = 0; i < positionsAttribute.count; i++) {
     // Get the original position
-    const x = positions_original.array[i * 3];
-    const y = positions_original.array[i * 3 + 1];
-    const z = positions_original.array[i * 3 + 2];
+    const x = positions_fixed.array[i * 3];
+    const y = positions_fixed.array[i * 3 + 1];
+    const z = positions_fixed.array[i * 3 + 2];
 
     const vibration = averageFrequency/255;
 
