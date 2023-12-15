@@ -97,9 +97,9 @@ function init() {
 
     // positions
 
-    const x = (Math.random() - 0.5) * n - 1;
+    const x = (Math.random() - 0.5) * n + 1;
     const y = Math.random() * n + 0.5;
-    const z = (Math.random() - 0.5) * n - 1;
+    const z = (Math.random() - 0.5) * n + 1;
 
     positions.push(x, y, z);
 
