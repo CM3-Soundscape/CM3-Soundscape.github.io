@@ -236,7 +236,7 @@ function render() {
     const vibration = averageFrequency/255;
 
     // Update the y-coordinate based on the vibration
-    positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z + vibration);
+    positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z);
   }
 
   // Mark the colors attribute as needing an update
