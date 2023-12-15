@@ -200,19 +200,31 @@ function animate() {
 }
 
 function render() {
-    // Update the average frequency
-    const dataArray = analyser.getFrequencyData();
-  
-    // Calculate the average frequency to determine color
-    const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
-  
-    // Map the average frequency to a color gradient
-    const color = mapFrequencyToColor(averageFrequency);
-    points.material.color = color;
-  
-    renderer.render(scene, camera);
+  // Update the average frequency
+  const dataArray = analyser.getFrequencyData();
+
+  // Calculate the average frequency to determine color
+  const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
+
+  // Map the average frequency to a color gradient
+  const color = mapFrequencyToColor(averageFrequency);
+
+  // Access the position and color attributes
+  const positionsAttribute = points.geometry.getAttribute('position');
+  const colorsAttribute = points.geometry.getAttribute('color');
+
+  // Iterate through each vertex and update its color
+  for (let i = 0; i < positionsAttribute.count; i++) {
+    const vertexColor = mapFrequencyToColor(dataArray[i % dataArray.length]);
+    colorsAttribute.setXYZ(i, vertexColor.r, vertexColor.g, vertexColor.b);
   }
-  
+
+  // Mark the colors attribute as needing an update
+  colorsAttribute.needsUpdate = true;
+
+  renderer.render(scene, camera);
+}
+
   function mapFrequencyToColor(frequency) {
     // Map the frequency to a color gradient
     const hue = (frequency / 255) * 10; // Adjust the factor to control color range
