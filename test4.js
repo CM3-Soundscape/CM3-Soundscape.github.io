@@ -202,9 +202,42 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// ...
+
 function animate() {
   renderer.setAnimationLoop(render);
+
+  // Add this line to continuously update the animation
+  requestAnimationFrame(animate);
+  
+  // Update the average frequency
+  const dataArray = analyser.getFrequencyData();
+  averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
+
+  // Access the position attribute
+  const positionsAttribute = points.geometry.getAttribute('position');
+
+  // Iterate through each vertex and update its position based on the averageFrequency
+  for (let i = 0; i < positionsAttribute.count; i++) {
+    // Get the original position
+    const x = positions_original.array[i * 3];
+    const y = positions_original.array[i * 3 + 1];
+    const z = positions_original.array[i * 3 + 2];
+
+    // Use sine and cosine functions to create a vibration effect
+    const vibrationAmount = 0.1; // Adjust this value to control the intensity of the vibration
+    const vibrationSpeed = 0.1; // Adjust this value to control the speed of the vibration
+
+    const vibration = Math.sin(i * 0.1 + averageFrequency * vibrationSpeed) * vibrationAmount;
+
+    // Update the y-coordinate based on the vibration
+    positionsAttribute.setXYZ(i, x, y + vibration, z);
+  }
+
+  // Mark the positions attribute as needing an update
+  positionsAttribute.needsUpdate = true;
 }
+
 
 function render() {
   //check if analyser needs update?
@@ -222,32 +255,10 @@ function render() {
   for (let i = 0; i < colorsAttribute.count; i++) {
     colorsAttribute.setXYZ(i, color.r, color.g, color.b);
   }
-  
 
-    // Adjust the scaling factor for responsiveness
-  const scaledFactor = averageFrequency * 2;
-  var minOriginal = 0;
-  var maxOriginal = 255;
-
-  var vibration = normalize(averageFrequency, minOriginal, maxOriginal);
-
-  for (let i=0; i<positionsAttribute.count; i++) {
-    x_original = positions_original.getX(i);
-    y_original = positions_original.getY(i);
-    z_original = positions_original.getZ(i);
-
-    // Update the position based on the original position and vibration
-    positionsAttribute.setX(i, x_original + vibration);
-    positionsAttribute.setY(i, y_original + vibration);
-    positionsAttribute.setZ(i, z_original + vibration);
-  }
   // Mark the colors attribute as needing an update
   colorsAttribute.needsUpdate = true;
   // Mark the positions attribute as needing an update
   positionsAttribute.needsUpdate = true;
   renderer.render(scene, camera);
-}
-
-function normalize(value, minOriginal, maxOriginal) {
-  return (value - minOriginal) / (maxOriginal - minOriginal);
 }
