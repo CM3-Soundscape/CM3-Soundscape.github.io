@@ -227,11 +227,10 @@ function render() {
   var vibration = normalize(averageFrequency, minOriginal, maxOriginal);
 
   for (let i=0; i<positionsAttribute.count; i++) {
-    position_i = positions_original[i];
-
-    positionsAttribute.setX(i, position_i[0] + vibration);
-    positionsAttribute.setY(i, position_i[1] + vibration);
-    positionsAttribute.setZ(i, position_i[2] + vibration);
+    xyz_original = positions_original[i];
+    positionsAttribute.setX(i, xyz_original.x + vibration);
+    positionsAttribute.setY(i, xyz_original.y + vibration);
+    positionsAttribute.setZ(i, xyz_original.z + vibration);
   }
 /*
   for (let i = 0; i < geometry2.count; i++) {
