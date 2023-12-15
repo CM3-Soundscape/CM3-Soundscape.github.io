@@ -13,6 +13,7 @@ let listener;
 let averageFrequency = 0;
 let analyser;
 let geometry2;
+let positions_original;
 
 init();
 animate();
@@ -118,6 +119,7 @@ function init() {
 
   geometry2.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  const positions_original = geometry2.getAttribute('position');
 
   const material = new THREE.PointsMaterial({ size: 0.001, vertexColors: true });
 
@@ -223,7 +225,11 @@ function render() {
 
   var vibration = normalize(averageFrequency, minOriginal, maxOriginal);
 
-  geometry2.scale(vibration, vibration, vibration );
+  for (let i=0; i<positionsAttribute.count; i++) {
+    positionsAttribute.setX(i, positions_original.getX(i) + vibration);
+    positionsAttribute.setY(i, positions_original.getY(i) + vibration);
+    positionsAttribute.setZ(i, positions_original.getZ(i) + vibration);
+  }
 /*
   for (let i = 0; i < geometry2.count; i++) {
 
