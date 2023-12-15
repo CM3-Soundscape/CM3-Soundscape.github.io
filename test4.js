@@ -14,10 +14,7 @@ let averageFrequency = 0;
 let analyser;
 let geometry2;
 let positions_original;
-let position_i;
-let x_original;
-let y_original;
-let z_original
+let position_fixed;
 
 init();
 animate();
@@ -130,7 +127,7 @@ function init() {
   points = new THREE.Points(geometry2, material);
   scene.add(points);
   positions_original = points.geometry.getAttribute('position');
-  const positions_fixed = positions_original.clone();
+  positions_fixed = positions_original.clone();
   Object.freeze(positions_fixed);
   //
   
