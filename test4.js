@@ -130,7 +130,7 @@ function init() {
 
   // Create an Audio object and link it to the listener
   audio = new THREE.Audio(listener);
-  audioFile = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
+  audioFile = './sounds/drums.mp3'; // Change to your audio file
   const loader = new THREE.AudioLoader();
   loader.load(audioFile, function (buffer) {
     audio.setBuffer(buffer);
