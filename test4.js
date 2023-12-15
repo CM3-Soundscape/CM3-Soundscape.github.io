@@ -210,12 +210,30 @@ function render() {
   const colorsAttribute = points.geometry.getAttribute('color');
 
   // Iterate through each vertex and update its color
-  for (let i = 0; i < positionsAttribute.count; i++) {
+  for (let i = 0; i < colorsAttribute.count; i++) {
     colorsAttribute.setXYZ(i, color.r, color.g, color.b);
   }
+  
+  const scaleFactor = map(averageFrequency, 0, 255, 1, 10);
 
+    // Adjust the scaling factor for responsiveness
+  const scaledFactor = scaleFactor * 2;
+
+    // Update the position of each point based on the scaled amplitude
+  for (let i = 0; i < positionsAttribute.count; i++) {
+      const x = positions.getX(i);
+      const y = positions.getY(i);
+      const z = positions.getZ(i);
+
+      // Update the position based on the scaled amplitude
+      positions.setXYZ(i, x * scaledFactor, y * scaledFactor, z * scaledFactor);
+    }
+
+    
+  }
   // Mark the colors attribute as needing an update
   colorsAttribute.needsUpdate = true;
-
+  // Mark the positions attribute as needing an update
+  positionsAttribute.needsUpdate = true;
   renderer.render(scene, camera);
 }
