@@ -202,12 +202,8 @@ function animate() {
 function render() {
   // Update the average frequency
   const dataArray = analyser.getFrequencyData();
-
-  // Calculate the average frequency to determine color
   const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
-
-  // Map the average frequency to a color gradient
-  const color = mapFrequencyToColor(averageFrequency);
+	const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
 
   // Access the position and color attributes
   const positionsAttribute = points.geometry.getAttribute('position');
@@ -215,8 +211,7 @@ function render() {
 
   // Iterate through each vertex and update its color
   for (let i = 0; i < positionsAttribute.count; i++) {
-    const vertexColor = mapFrequencyToColor(dataArray[i % dataArray.length]);
-    colorsAttribute.setXYZ(i, vertexColor.r, vertexColor.g, vertexColor.b);
+    colorsAttribute.setXYZ(i, color.r, color.g, color.b);
   }
 
   // Mark the colors attribute as needing an update
@@ -224,10 +219,3 @@ function render() {
 
   renderer.render(scene, camera);
 }
-
-  function mapFrequencyToColor(frequency) {
-    // Map the frequency to a color gradient
-    const hue = (frequency / 255) * 1; // Adjust the factor to control color range
-  
-    return new THREE.Color().setRGB(hue, hue, hue);
-  }
