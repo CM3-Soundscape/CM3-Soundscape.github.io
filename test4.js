@@ -228,9 +228,14 @@ function render() {
   var vibration = normalize(averageFrequency, minOriginal, maxOriginal);
 
   for (let i=0; i<positionsAttribute.count; i++) {
-    positionsAttribute.setX(i, positions_original[i].x + vibration);
-    positionsAttribute.setY(i, positions_original[i].y + vibration);
-    positionsAttribute.setZ(i, positions_original[i].z + vibration);
+    const xOriginal = positions_original.getX(i);
+    const yOriginal = positions_original.getY(i);
+    const zOriginal = positions_original.getZ(i);
+
+    // Update the position based on the original position and vibration
+    positionsAttribute.setX(i, xOriginal + vibration);
+    positionsAttribute.setY(i, yOriginal + vibration);
+    positionsAttribute.setZ(i, zOriginal + vibration);
   }
 /*
   for (let i = 0; i < geometry2.count; i++) {
