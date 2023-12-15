@@ -222,6 +222,13 @@ function render() {
 
   var vibration = normalize(averageFrequency, minOriginal, maxOriginal);
 
+  geometry2.scale(vibration, vibration, vibration );
+/*
+  for (let i = 0; i < geometry2.count; i++) {
+
+  }
+
+  /*
     // Update the position of each point based on the scaled amplitude
   for (let i = 0; i < positionsAttribute.count; i++) {
       const x = positionsAttribute.getX(i);
@@ -233,7 +240,7 @@ function render() {
       // Update the position based on the scaled amplitude
       positionsAttribute.setXYZ(i, x2 +vibration, y2 + vibration, z2 + vibration);
     }
-
+*/
     
   // Mark the colors attribute as needing an update
   colorsAttribute.needsUpdate = true;
