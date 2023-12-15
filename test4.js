@@ -214,10 +214,9 @@ function render() {
     colorsAttribute.setXYZ(i, color.r, color.g, color.b);
   }
   
-  const scaleFactor = map(averageFrequency, 0, 255, 1, 10);
 
     // Adjust the scaling factor for responsiveness
-  const scaledFactor = scaleFactor * 2;
+  const scaledFactor = averageFrequency * 2;
 
     // Update the position of each point based on the scaled amplitude
   for (let i = 0; i < positionsAttribute.count; i++) {
