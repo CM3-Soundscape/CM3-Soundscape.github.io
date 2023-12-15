@@ -209,29 +209,6 @@ function animate() {
 
   // Add this line to continuously update the animation
   requestAnimationFrame(animate);
-  
-  // Update the average frequency
-  const dataArray = analyser.getFrequencyData();
-  averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
-
-  // Access the position attribute
-  const positionsAttribute = points.geometry.getAttribute('position');
-
-  // Iterate through each vertex and update its position based on the averageFrequency
-  for (let i = 0; i < positionsAttribute.count; i++) {
-    // Get the original position
-    const x = positions_original.array[i * 3];
-    const y = positions_original.array[i * 3 + 1];
-    const z = positions_original.array[i * 3 + 2];
-
-    const vibration = averageFrequency;
-
-    // Update the y-coordinate based on the vibration
-    positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z + vibration);
-  }
-
-  // Mark the positions attribute as needing an update
-  positionsAttribute.needsUpdate = true;
 }
 
 
@@ -250,6 +227,17 @@ function render() {
   // Iterate through each vertex and update its color
   for (let i = 0; i < colorsAttribute.count; i++) {
     colorsAttribute.setXYZ(i, color.r, color.g, color.b);
+  }
+  for (let i = 0; i < positionsAttribute.count; i++) {
+    // Get the original position
+    const x = positions_original.array[i * 3];
+    const y = positions_original.array[i * 3 + 1];
+    const z = positions_original.array[i * 3 + 2];
+
+    const vibration = averageFrequency;
+
+    // Update the y-coordinate based on the vibration
+    positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z + vibration);
   }
 
   // Mark the colors attribute as needing an update
