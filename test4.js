@@ -129,7 +129,7 @@ function init() {
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
-  positions_original = points.geometry2.getAttribute('position');
+  positions_original = points.geometry.getAttribute('position');
   //
   
 
