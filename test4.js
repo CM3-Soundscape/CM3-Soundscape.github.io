@@ -118,7 +118,7 @@ function init() {
   geometry2.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-  const material = new THREE.PointsMaterial({ size: 0.1, vertexColors: true });
+  const material = new THREE.PointsMaterial({ size: 0.001, vertexColors: true });
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
@@ -225,8 +225,11 @@ function render() {
     // Update the position of each point based on the scaled amplitude
   for (let i = 0; i < positionsAttribute.count; i++) {
       const x = positionsAttribute.getX(i);
+      x = normalize(x, 0, 1);
       const y = positionsAttribute.getY(i);
+      y = normalize(y, 0, 1);
       const z = positionsAttribute.getZ(i);
+      z = normalize(z, 0, 1);
       // Update the position based on the scaled amplitude
       positionsAttribute.setXYZ(i, x +vibration, y + vibration, z + vibration);
     }
