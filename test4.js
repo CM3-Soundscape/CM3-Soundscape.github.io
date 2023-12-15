@@ -12,6 +12,7 @@ let audioFile;
 let listener;
 let averageFrequency = 0;
 let analyser;
+let geometry2;
 
 init();
 animate();
