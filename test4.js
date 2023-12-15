@@ -224,7 +224,7 @@ function animate() {
     const y = positions_original.array[i * 3 + 1];
     const z = positions_original.array[i * 3 + 2];
 
-    const vibration = averageFrequency/255 ;
+    const vibration = averageFrequency;
 
     // Update the y-coordinate based on the vibration
     positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z + vibration);
