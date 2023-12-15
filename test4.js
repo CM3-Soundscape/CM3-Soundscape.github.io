@@ -123,7 +123,7 @@ function init() {
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   positions_original = geometry2.getAttribute('position');
 
-  const material = new THREE.PointsMaterial({ size: 0.001, vertexColors: true });
+  const material = new THREE.PointsMaterial({ size: 0.1, vertexColors: true });
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
