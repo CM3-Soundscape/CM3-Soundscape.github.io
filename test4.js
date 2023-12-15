@@ -15,6 +15,7 @@ let analyser;
 let geometry2;
 let positions_original;
 let position_i;
+let xyz_original;
 
 init();
 animate();
