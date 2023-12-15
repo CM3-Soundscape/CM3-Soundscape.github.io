@@ -129,7 +129,7 @@ function init() {
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
-  positions_original = points.geometry.getAttribute('position');
+  positions_original = Object.freeze(points.geometry.getAttribute('position'));
   //
   
 
@@ -234,7 +234,7 @@ function render() {
     const y = positions_original.array[i * 3 + 1];
     const z = positions_original.array[i * 3 + 2];
 
-    const vibration = averageFrequency/100;
+    const vibration = averageFrequency/255;
 
     // Update the y-coordinate based on the vibration
     positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z + vibration);
