@@ -230,7 +230,6 @@ function render() {
     }
 
     
-  }
   // Mark the colors attribute as needing an update
   colorsAttribute.needsUpdate = true;
   // Mark the positions attribute as needing an update
