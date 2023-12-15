@@ -225,11 +225,11 @@ function render() {
     // Update the position of each point based on the scaled amplitude
   for (let i = 0; i < positionsAttribute.count; i++) {
       const x = positionsAttribute.getX(i);
-      x2 = normalize(x, 0, 1);
+      const x2 = normalize(x, 0, 1);
       const y = positionsAttribute.getY(i);
-      y2 = normalize(y, 0, 1);
+      const y2 = normalize(y, 0, 1);
       const z = positionsAttribute.getZ(i);
-      z2 = normalize(z, 0, 1);
+      const z2 = normalize(z, 0, 1);
       // Update the position based on the scaled amplitude
       positionsAttribute.setXYZ(i, x2 +vibration, y2 + vibration, z2 + vibration);
     }
