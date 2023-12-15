@@ -215,7 +215,7 @@ function render() {
   
   function mapFrequencyToColor(frequency) {
     // Map the frequency to a color gradient
-    const hue = (frequency / 255) * 0.8; // Adjust the factor to control color range
+    const hue = (frequency / 255) * 10; // Adjust the factor to control color range
     const saturation = 1.0;
     const lightness = 0.5;
   
