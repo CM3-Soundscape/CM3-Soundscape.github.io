@@ -225,7 +225,7 @@ function render() {
       const z = positionsAttribute.getZ(i);
 
       // Update the position based on the scaled amplitude
-      positions.setXYZ(i, x * scaledFactor, y * scaledFactor, z * scaledFactor);
+      positionsAttribute.setXYZ(i, x * scaledFactor, y * scaledFactor, z * scaledFactor);
     }
 
     
