@@ -220,9 +220,9 @@ function render() {
 
     // Update the position of each point based on the scaled amplitude
   for (let i = 0; i < positionsAttribute.count; i++) {
-      const x = positions.getX(i);
-      const y = positions.getY(i);
-      const z = positions.getZ(i);
+      const x = positionsAttribute.getX(i);
+      const y = positionsAttribute.getY(i);
+      const z = positionsAttribute.getZ(i);
 
       // Update the position based on the scaled amplitude
       positions.setXYZ(i, x * scaledFactor, y * scaledFactor, z * scaledFactor);
