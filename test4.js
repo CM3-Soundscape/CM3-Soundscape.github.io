@@ -216,16 +216,19 @@ function render() {
   
 
     // Adjust the scaling factor for responsiveness
-  const scaledFactor = (averageFrequency/255) * 2;
+  const scaledFactor = averageFrequency * 2;
+  var minOriginal = 0;
+  var maxOriginal = 255;
+
+  var vibration = normalize(averageFrequency, minOriginal, maxOriginal);
 
     // Update the position of each point based on the scaled amplitude
   for (let i = 0; i < positionsAttribute.count; i++) {
       const x = positionsAttribute.getX(i);
       const y = positionsAttribute.getY(i);
       const z = positionsAttribute.getZ(i);
-
       // Update the position based on the scaled amplitude
-      positionsAttribute.setXYZ(i, x * scaledFactor, y * scaledFactor, z * scaledFactor);
+      positionsAttribute.setXYZ(i, x +vibration, y + vibration, z + vibration);
     }
 
     
@@ -234,4 +237,8 @@ function render() {
   // Mark the positions attribute as needing an update
   positionsAttribute.needsUpdate = true;
   renderer.render(scene, camera);
+}
+
+function normalize(value, minOriginal, maxOriginal) {
+  return (value - minOriginal) / (maxOriginal - minOriginal);
 }
