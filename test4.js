@@ -14,7 +14,7 @@ let averageFrequency = 0;
 let analyser;
 let geometry2;
 let positions_original;
-let position_fixed;
+let positions_fixed;
 
 init();
 animate();
