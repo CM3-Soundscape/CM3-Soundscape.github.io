@@ -113,10 +113,9 @@ function init() {
 	audio4.setVolume(0.5); // Adjust the volume if needed
   }
   );
-
-
-    const analyzer = new THREE.AudioAnalyser(audio, numBands);
-    analyzers.push(analyzer);
+  
+  let audioElements = [audio1, audio2, audio3, audio4];
+  analyzers = [createAnalyzer(audio1), createAnalyzer(audio2), createAnalyzer(audio3), createAnalyzer(audio4)];
 
     const points = createPointsCollection(i);
     pointsCollections.push(points);
@@ -131,6 +130,11 @@ function init() {
   listener = new THREE.AudioListener();
   camera.add(listener);
   window.addEventListener('resize', onWindowResize);
+}
+
+function createAnalyzer(audio) {
+	const analyzer = new THREE.AudioAnalyser(audio, 32); // 32 frequency bands
+	return analyzer;
 }
 
 function createPointsCollection(index) {
