@@ -175,13 +175,19 @@ function createPointsCollection(index) {
 }
 
 function onSelectStart(event) {
-  const controller = event.target;
-  const intersections = getIntersections(controller);
-  if (intersections.length > 0) {
-    const intersection = intersections[0];
-    const index = controllers.indexOf(controller);
-    toggleAudio(index);
-  }
+        const intersections = getIntersections(controller1);
+      
+        if (intersections.length > 0) {
+          const intersectedObject = intersections[0].object;
+      
+          // Pause and play the audio to trigger a restart
+          for (let i = 0; i < pointsCollections.length; i++) {
+            if (intersectedObject == pointsCollections[i]) {
+              toggleAudio(audioElements[i], i);
+              break; // Exit the loop after finding the matching points collection
+            }
+          }
+        }
 }
 
 function onSelectEnd() {
@@ -198,25 +204,26 @@ function toggleAudio(index) {
   }
 }
 
-function getIntersections(controller) {
-  const tempMatrix = new THREE.Matrix4();
-  const direction = new THREE.Vector3();
-  const raycaster = new THREE.Raycaster();
-  const intersections = [];
-
-  controller.getWorldDirection(direction);
-  raycaster.set(controller.position, direction.negate());
-
-  // Check for intersection with points
-  const intersectedObjects = [pointsCollections[index]];
-  const intersects = raycaster.intersectObjects(intersectedObjects);
-
-  if (intersects.length > 0) {
-    intersections.push(intersects[0]);
+function getIntersections(controller1) {
+    const tempMatrix = new THREE.Matrix4();
+    const raycaster = new THREE.Raycaster();
+    const intersections = [];
+  
+    // Update the raycaster with the controller's position and direction
+    const controllerMatrix = controller1.matrixWorld;
+    raycaster.ray.origin.setFromMatrixPosition(controllerMatrix);
+    raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix.identity().extractRotation(controllerMatrix));
+  
+    // Check for intersections with each points collection
+    for (const points of pointsCollections) {
+      const intersection = raycaster.intersectObject(points);
+      if (intersection.length > 0) {
+        intersections.push(intersection[0]);
+      }
+    }
+  
+    return intersections;
   }
-
-  return intersections;
-}
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -225,11 +232,11 @@ function onWindowResize() {
 }
 
 function animate() {
-  renderer.setAnimationLoop(render);
-
-  // Add this line to continuously update the animation
-  requestAnimationFrame(animate);
-}
+    renderer.setAnimationLoop(render);
+  
+    // Add this line to continuously update the animation
+    requestAnimationFrame(animate);
+  }
 
 function render() {
   for (let i = 0; i < controllers.length; i++) {
