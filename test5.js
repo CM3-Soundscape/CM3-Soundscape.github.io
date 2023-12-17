@@ -56,7 +56,7 @@ function init() {
   document.body.appendChild(VRButton.createButton(renderer));
 
   controller1 = renderer.xr.getController(0);
-  controller1.addEventListener('select', onSelect);
+  controller1.addEventListener('select', onSelectStart);
   scene.add(controller1);
 
   const controllerModelFactory = new XRControllerModelFactory();
