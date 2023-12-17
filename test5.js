@@ -117,6 +117,7 @@ function init() {
   let audioElements = [audio1, audio2, audio3, audio4];
   analyzers = [createAnalyzer(audio1), createAnalyzer(audio2), createAnalyzer(audio3), createAnalyzer(audio4)];
 
+  for (let i = 0; i < 4; i++) {
     const points = createPointsCollection(i);
     pointsCollections.push(points);
     scene.add(points);
@@ -125,7 +126,7 @@ function init() {
     const positions_fixed = positions_original.clone();
     Object.freeze(positions_fixed);
     positions_fixed_array.push(positions_fixed);
-
+  }
 
   listener = new THREE.AudioListener();
   camera.add(listener);
