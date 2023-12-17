@@ -15,6 +15,8 @@ let analyser;
 let geometry2;
 let positions_original;
 let positions_fixed;
+let particles = 50000;
+let numBands = 32;
 
 init();
 animate();
@@ -85,8 +87,6 @@ function init() {
   controller1.add(line.clone());
   controller2.add(line.clone());
 
-  const particles = 50000;
-
   const geometry2 = new THREE.BufferGeometry();
 
   const positions = [];
@@ -145,7 +145,7 @@ function init() {
   });
   audio.pause();
   
-  analyser = new THREE.AudioAnalyser(audio, 32);
+  analyser = new THREE.AudioAnalyser(audio, numBands);
 
   camera.add(listener);
 
@@ -212,8 +212,6 @@ function animate() {
 
 
 function render() {
-  //check if analyser needs update?
-
   // Update the average frequency
   const dataArray = analyser.getFrequencyData();
   const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
