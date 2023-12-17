@@ -188,20 +188,20 @@ function createPointsCollection(index) {
 }
 
 function onSelectStart(event) {
-        const intersections = getIntersections(controller1);
-      
-        if (intersections.length > 0) {
-          const intersectedObject = intersections[0].object;
-      
-          // Pause and play the audio to trigger a restart
-          for (let i = 0; i < pointsCollections.length; i++) {
-            if (intersectedObject == pointsCollections[i]) {
-              toggleAudio(audioElements[i], i);
-              break; // Exit the loop after finding the matching points collection
-            }
-          }
+    const intersections = getIntersections(controller1);
+  
+    if (intersections.length > 0) {
+      const intersectedObject = intersections[0].object;
+  
+      // Pause and play the audio to trigger a restart
+      for (let i = 0; i < pointsCollections.length; i++) {
+        if (intersectedObject == pointsCollections[i]) {
+          toggleAudio(i);
+          break; // Exit the loop after finding the matching points collection
         }
-}
+      }
+    }
+  }
 
 function onSelectEnd() {
   // Handle the selectend event here if needed
@@ -251,44 +251,44 @@ function animate() {
     requestAnimationFrame(animate);
   }
 
-function render() {
-  for (let i = 0; i < controllers.length; i++) {
-    const controller = controllers[i];
-    const analyser = analyzers[i];
-    const points = pointsCollections[i];
-    const positions_fixed = positions_fixed_array[i]; // Use the correct positions_fixed array
-
-    if (isplaying[i]) {
-      const dataArray = analyser.getFrequencyData();
-      const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
-      const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
-
-      const positionsAttribute = points.geometry.getAttribute('position');
-      const colorsAttribute = points.geometry.getAttribute('color');
-
-      for (let j = 0; j < colorsAttribute.count; j++) {
-        colorsAttribute.setXYZ(j, color.r, color.g, color.b);
-      }
-
-      const group_size = particles / numBands;
-      for (let k = 0; k < numBands; k++) {
-        const group = dataArray.slice(group_size * k, group_size * (k + 1));
-        const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
-        const vibration = averageFrequency / 10;
-
-        for (let j = 0; j < group_size; j++) {
-          const x = positions_fixed.array[k * group_size * 3 + j * 3];
-          const y = positions_fixed.array[k * group_size * 3 + j * 3 + 1];
-          const z = positions_fixed.array[k * group_size * 3 + j * 3 + 2];
-
-          positionsAttribute.setXYZ(k * group_size + j, x + vibration, y + vibration, z);
+  function render() {
+    for (let i = 0; i < pointsCollections.length; i++) {
+      const controller = controller1; // Use controller1 for consistency
+      const analyser = analyzers[i];
+      const points = pointsCollections[i];
+      const positions_fixed = positions_fixed_array[i]; // Use the correct positions_fixed array
+  
+      if (isplaying[i]) {
+        const dataArray = analyser.getFrequencyData();
+        const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
+        const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
+  
+        const positionsAttribute = points.geometry.getAttribute('position');
+        const colorsAttribute = points.geometry.getAttribute('color');
+  
+        for (let j = 0; j < colorsAttribute.count; j++) {
+          colorsAttribute.setXYZ(j, color.r, color.g, color.b);
         }
+  
+        const group_size = particles / numBands;
+        for (let k = 0; k < numBands; k++) {
+          const group = dataArray.slice(group_size * k, group_size * (k + 1));
+          const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
+          const vibration = averageFrequency / 10;
+  
+          for (let j = 0; j < group_size; j++) {
+            const x = positions_fixed.array[k * group_size * 3 + j * 3];
+            const y = positions_fixed.array[k * group_size * 3 + j * 3 + 1];
+            const z = positions_fixed.array[k * group_size * 3 + j * 3 + 2];
+  
+            positionsAttribute.setXYZ(k * group_size + j, x + vibration, y + vibration, z);
+          }
+        }
+  
+        colorsAttribute.needsUpdate = true;
+        positionsAttribute.needsUpdate = true;
       }
-
-      colorsAttribute.needsUpdate = true;
-      positionsAttribute.needsUpdate = true;
     }
+  
+    renderer.render(scene, camera);
   }
-
-  renderer.render(scene, camera);
-}
