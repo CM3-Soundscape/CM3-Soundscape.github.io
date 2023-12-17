@@ -15,7 +15,7 @@ let analyser;
 let geometry2;
 let positions_original;
 let positions_fixed;
-let particles = 1024;
+let particles = 4096;
 let numBands = 1024;
 let group_size;
 
@@ -123,7 +123,7 @@ function init() {
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   
 
-  const material = new THREE.PointsMaterial({ size: 0.001, vertexColors: true });
+  const material = new THREE.PointsMaterial({ size: 0.01, vertexColors: true });
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
@@ -239,9 +239,23 @@ function render() {
       const x = positions_fixed.array[j * group_size * 3 + i * 3];
       const y = positions_fixed.array[j * group_size * 3 + i * 3 + 1];
       const z = positions_fixed.array[j * group_size * 3 + i * 3 + 2];
+
+      if (x<0 & z < 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y, z - vibration);
+      }
+      else if (x<0 & z > 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y, z + vibration);
+      }
+      else if (x>0 & z < 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y, z - vibration);
+      }
+      else if (x>0 & z > 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y, z + vibration);
+      }
+      else {
+        positionsAttribute.setXYZ(j * group_size + i, x , y, z );
+      }
   
-      // Update the y-coordinate based on the vibration
-      positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y, z + vibration);
     }
   }
   // Mark the colors attribute as needing an update
