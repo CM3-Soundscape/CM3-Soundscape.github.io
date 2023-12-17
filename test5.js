@@ -4,7 +4,7 @@ import { XRControllerModelFactory } from './webxr/XRControllerModelFactory.js';
 import { XRHandModelFactory } from './webxr/XRHandModelFactory.js';
 
 let camera, scene, renderer;
-let controllers = [];
+let controller1, controller2;
 let pointsCollections = [];
 let audio1, audio2, audio3, audio4;
 let audioFile1, audioFile2, audioFile3, audioFile4;
@@ -55,18 +55,31 @@ function init() {
 
   document.body.appendChild(VRButton.createButton(renderer));
 
-  // Create controllers
-  for (let i = 0; i < 2; i++) {
-    const controller = renderer.xr.getController(i);
-    controller.addEventListener('selectstart', onSelectStart);
-    controller.addEventListener('selectend', onSelectEnd);
-    scene.add(controller);
-    controllers.push(controller);
+  controller1 = renderer.xr.getController(0);
+  controller1.addEventListener('select', onSelect);
+  scene.add(controller1);
 
-    const controllerGrip = renderer.xr.getControllerGrip(i);
-    controllerGrip.add(new XRControllerModelFactory().createControllerModel(controllerGrip));
-    scene.add(controllerGrip);
-  }
+  const controllerModelFactory = new XRControllerModelFactory();
+	const handModelFactory = new XRHandModelFactory();
+
+	// Hand 1
+	const controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+	controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
+	scene.add( controllerGrip1 );
+
+	/* hand1 = renderer.xr.getHand( 0 );
+	hand1.add( handModelFactory.createHandModel( hand1 ) );
+
+	scene.add( hand1 ); */
+
+  const geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+
+  const line = new THREE.Line( geometry );
+  line.name = 'line';
+  line.scale.z = 5;
+
+  controller1.add( line.clone() );
+
   audioFiles= ['./sounds/Audio 1 (Coffee Shop).mp3', './sounds/Audio 2 (Walking).mp3', './sounds/Audio 3 - Korenmarkt.mp3', './sounds/drums.mp3'];
   // Create audio elements, analyzers, and points collections
   // Initialize Web Audio API
