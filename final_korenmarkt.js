@@ -15,7 +15,7 @@ let analyser;
 let geometry2;
 let positions_original;
 let positions_fixed;
-let particles = 1024;
+let particles = 4096;
 let numBands = 1024;
 let group_size;
 
@@ -92,17 +92,22 @@ function init() {
 
   const positions = [];
   const colors = [];
+
   const color = new THREE.Color();
 
-  const n = 1;
+  const n = 1; // distribute points in a cube of size 1 around (-1, 0.5, -1)
 
-  for (let i = 0; i < 1024; i++) {
-    const theta = (i / 1024) * Math.PI * 2;
-    const x = Math.cos(theta) * n;
+  for (let i = 0; i < particles; i++) {
+
+    // positions
+
+    const x = (Math.random() - 0.5) * n - 1;
     const y = Math.random() * n + 0.5;
-    const z = Math.sin(theta) * n;
+    const z = (Math.random() - 0.5) * n - 1;
 
     positions.push(x, y, z);
+
+    // colors
 
     const vx = (x / n) + 0.5;
     const vy = (y / n) + 0.5;
@@ -111,14 +116,17 @@ function init() {
     color.setRGB(vx, vy, vz);
 
     colors.push(color.r, color.g, color.b);
+
   }
 
   geometry2.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  
 
-  const material = new THREE.PointsMaterial({ size: 0.001, vertexColors: true });
+  const material = new THREE.PointsMaterial({ size: 0.01, vertexColors: true });
 
-  const points = new THREE.Points(geometry2, material);
+  points = new THREE.Points(geometry2, material);
+  scene.add(points);
   positions_original = points.geometry.getAttribute('position');
   positions_fixed = positions_original.clone();
   Object.freeze(positions_fixed);
@@ -129,7 +137,7 @@ function init() {
 
   // Create an Audio object and link it to the listener
   audio = new THREE.Audio(listener);
-  audioFile = './sounds/drums.mp3'; // Change to your audio file
+  audioFile = './sounds/Audio 3 - Korenmarkt.mp3'; // Change to your audio file
   const loader = new THREE.AudioLoader();
   loader.load(audioFile, function (buffer) {
     audio.setBuffer(buffer);
@@ -231,9 +239,23 @@ function render() {
       const x = positions_fixed.array[j * group_size * 3 + i * 3];
       const y = positions_fixed.array[j * group_size * 3 + i * 3 + 1];
       const z = positions_fixed.array[j * group_size * 3 + i * 3 + 2];
+
+      if (x<0 & z < 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y + vibration, z - vibration);
+      }
+      else if (x<0 & z > 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y + vibration, z + vibration);
+      }
+      else if (x>0 & z < 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y + vibration, z - vibration);
+      }
+      else if (x>0 & z > 0) {
+        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y + vibration , z + vibration);
+      }
+      else {
+        positionsAttribute.setXYZ(j * group_size + i, x , y, z );
+      }
   
-      // Update the y-coordinate based on the vibration
-      positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y + vibration, z);
     }
   }
   // Mark the colors attribute as needing an update
