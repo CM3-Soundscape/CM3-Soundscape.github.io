@@ -15,6 +15,7 @@ let analyser;
 let geometry2;
 let positions_original;
 let positions_fixed;
+let numBands = 32;
 
 init();
 animate();
@@ -145,7 +146,7 @@ function init() {
   });
   audio.pause();
   
-  analyser = new THREE.AudioAnalyser(audio, 32);
+  analyser = new THREE.AudioAnalyser(audio, numBands);
 
   camera.add(listener);
 
@@ -227,17 +228,27 @@ function render() {
   for (let i = 0; i < colorsAttribute.count; i++) {
     colorsAttribute.setXYZ(i, color.r, color.g, color.b);
   }
-  for (let i = 0; i < positionsAttribute.count; i++) {
-    // Get the original position
-    const x = positions_fixed.array[i * 3];
-    const y = positions_fixed.array[i * 3 + 1];
-    const z = positions_fixed.array[i * 3 + 2];
-
-    const vibration = averageFrequency/255;
-
-    // Update the y-coordinate based on the vibration
-    positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z);
-  }
+  
+    // Iterate through each vertex and update its position based on the FFT bands
+    for (let i = 0; i < positionsAttribute.count; i++) {
+      // Get the original position
+      const x = positions_fixed.array[i * 3];
+      const y = positions_fixed.array[i * 3 + 1];
+      const z = positions_fixed.array[i * 3 + 2];
+  
+      // Define the range of bands for different sections of the mesh
+      const bandStart = i * numBands / positionsAttribute.count;
+      const bandEnd = (i + 1) * numBands / positionsAttribute.count;
+  
+      // Calculate the average frequency for the specific band range
+      const bandAmplitude = dataArray.slice(bandStart, bandEnd).reduce((acc, value) => acc + value, 0) / (bandEnd - bandStart);
+  
+      // Adjust the vibration intensity based on the band amplitude
+      const vibration = (bandAmplitude / 255) * 2;
+  
+      // Update the coordinates based on the vibration
+      positionsAttribute.setXYZ(i, x, y + vibration, z);
+    }
 
   // Mark the colors attribute as needing an update
   colorsAttribute.needsUpdate = true;
