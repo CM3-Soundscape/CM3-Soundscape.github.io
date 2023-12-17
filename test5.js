@@ -6,16 +6,11 @@ import { XRHandModelFactory } from './webxr/XRHandModelFactory.js';
 let camera, scene, renderer;
 let controller1, controller2;
 let pointsCollections = [];
-let audio1, audio2, audio3, audio4;
-let audioFile1, audioFile2, audioFile3, audioFile4;
+let audioElements;
 let analyzers;
 let isplaying = [false, false, false, false];
 let listener;
-let group_size;
-let audioFiles;
-let particles = 1024;
-let numBands = 256;
-let positions_fixed_array = [];
+let thetaValues = [];
 
 init();
 animate();
@@ -56,79 +51,21 @@ function init() {
   document.body.appendChild(VRButton.createButton(renderer));
 
   controller1 = renderer.xr.getController(0);
-  controller1.addEventListener('select', onSelectStart);
+  controller1.addEventListener('selectstart', onSelectStart);
   scene.add(controller1);
 
   const controllerModelFactory = new XRControllerModelFactory();
-	const handModelFactory = new XRHandModelFactory();
+  const handModelFactory = new XRHandModelFactory();
 
-	// Hand 1
-	const controllerGrip1 = renderer.xr.getControllerGrip( 0 );
-	controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
-	scene.add( controllerGrip1 );
+  const controllerGrip1 = renderer.xr.getControllerGrip(0);
+  controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
+  scene.add(controllerGrip1);
 
-	/* hand1 = renderer.xr.getHand( 0 );
-	hand1.add( handModelFactory.createHandModel( hand1 ) );
-
-	scene.add( hand1 ); */
-
-  const geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
-
-  const line = new THREE.Line( geometry );
-  line.name = 'line';
-  line.scale.z = 5;
-
-  controller1.add( line.clone() );
-
-  audioFiles= ['./sounds/Audio 1 (Coffee Shop).mp3', './sounds/Audio 2 (Walking).mp3', './sounds/Audio 3 - Korenmarkt.mp3', './sounds/drums.mp3'];
-  // Create audio elements, analyzers, and points collections
   // Initialize Web Audio API
   listener = new THREE.AudioListener();
 
-  // Create an Audio object and link it to the listener
-  audio1 = new THREE.Audio(listener);
-  audio2 = new THREE.Audio(listener);
-  audio3 = new THREE.Audio(listener);
-  audio4 = new THREE.Audio(listener);
-
-  // Load an audio file
-  audioFile1 = './sounds/drums.mp3'; // Change to your audio file
-  audioFile2 = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
-  audioFile3 = './sounds/Audio 2 (Walking).mp3'; // Change to your audio file
-  audioFile4 = './sounds/Audio 3 - Korenmarkt.mp3'; // Change to your audio file
-
-  // Load audio using THREE.AudioLoader
-  const loader1 = new THREE.AudioLoader();
-  
-  loader1.load(audioFile1, function (buffer) {
-    audio1.setBuffer(buffer);
-    audio1.setLoop(true); // Set to true if you want the audio to loop
-    audio1.setVolume(0.5); // Adjust the volume if needed
-  });
-  const loader2 = new THREE.AudioLoader();
-  loader2.load(audioFile2, function (buffer) {
-	audio2.setBuffer(buffer);
-	audio2.setLoop(true); // Set to true if you want the audio to loop
-	audio2.setVolume(0.5); // Adjust the volume if needed
-  }
-  );
-  const loader3 = new THREE.AudioLoader();
-  loader3.load(audioFile3, function (buffer) {
-	audio3.setBuffer(buffer);
-	audio3.setLoop(true); // Set to true if you want the audio to loop
-	audio3.setVolume(0.5); // Adjust the volume if needed
-  }
-  );
-  const loader4 = new THREE.AudioLoader();
-  loader4.load(audioFile4, function (buffer) {
-	audio4.setBuffer(buffer);
-	audio4.setLoop(true); // Set to true if you want the audio to loop
-	audio4.setVolume(0.5); // Adjust the volume if needed
-  }
-  );
-  
-  let audioElements = [audio1, audio2, audio3, audio4];
-  analyzers = [createAnalyzer(audio1), createAnalyzer(audio2), createAnalyzer(audio3), createAnalyzer(audio4)];
+  audioElements = createAudioElements();
+  analyzers = createAnalyzers();
 
   for (let i = 0; i < 4; i++) {
     const points = createPointsCollection(i);
@@ -138,7 +75,6 @@ function init() {
     const positions_original = points.geometry.getAttribute('position');
     const positions_fixed = positions_original.clone();
     Object.freeze(positions_fixed);
-    positions_fixed_array.push(positions_fixed);
   }
 
   listener = new THREE.AudioListener();
@@ -146,9 +82,35 @@ function init() {
   window.addEventListener('resize', onWindowResize);
 }
 
+function createAudioElements() {
+  const audioFiles = [
+    './sounds/drums.mp3',
+    './sounds/Audio 1 (Coffee Shop).mp3',
+    './sounds/Audio 2 (Walking).mp3',
+    './sounds/Audio 3 - Korenmarkt.mp3'
+  ];
+
+  const elements = audioFiles.map((file) => {
+    const audio = new THREE.Audio(listener);
+    const loader = new THREE.AudioLoader();
+    loader.load(file, function (buffer) {
+      audio.setBuffer(buffer);
+      audio.setLoop(true);
+      audio.setVolume(0.5);
+    });
+    return audio;
+  });
+
+  return elements;
+}
+
+function createAnalyzers() {
+  return audioElements.map((audio) => createAnalyzer(audio));
+}
+
 function createAnalyzer(audio) {
-	const analyzer = new THREE.AudioAnalyser(audio, 32); // 32 frequency bands
-	return analyzer;
+  const analyzer = new THREE.AudioAnalyser(audio, 32);
+  return analyzer;
 }
 
 function createPointsCollection(index) {
@@ -158,10 +120,10 @@ function createPointsCollection(index) {
   const colors = [];
   const color = new THREE.Color();
 
-  const n = 1; // distribute points in a cube of size 1 around the origin
+  const n = 1;
 
-  for (let i = 0; i < particles; i++) {
-    const theta = (i / particles) * Math.PI * 2; // Spread points equally around the origin
+  for (let i = 0; i < 1024; i++) {
+    const theta = (i / 1024) * Math.PI * 2;
     const x = Math.cos(theta) * n;
     const y = Math.random() * n + 0.5;
     const z = Math.sin(theta) * n;
@@ -188,23 +150,28 @@ function createPointsCollection(index) {
 }
 
 function onSelectStart(event) {
-    const intersections = getIntersections(controller1);
-  
-    if (intersections.length > 0) {
-      const intersectedObject = intersections[0].object;
-  
-      // Pause and play the audio to trigger a restart
-      for (let i = 0; i < pointsCollections.length; i++) {
-        if (intersectedObject == pointsCollections[i]) {
-          toggleAudio(i);
-          break; // Exit the loop after finding the matching points collection
-        }
-      }
+  const controllerDirection = new THREE.Vector3(0, 0, -1);
+  controllerDirection.applyQuaternion(controller1.quaternion);
+
+  const referenceVector = new THREE.Vector3(0, 0, -1);
+  const angle = controllerDirection.angleTo(referenceVector);
+  const angleDegrees = THREE.MathUtils.radToDeg(angle);
+
+  let selectedCollectionIndex = -1;
+
+  let minThetaDifference = Infinity;
+  for (let i = 0; i < thetaValues.length; i++) {
+    const thetaDifference = Math.abs(angle - thetaValues[i]);
+    if (thetaDifference < minThetaDifference) {
+      minThetaDifference = thetaDifference;
+      selectedCollectionIndex = i;
     }
   }
 
-function onSelectEnd() {
-  // Handle the selectend event here if needed
+  if (selectedCollectionIndex !== -1) {
+    toggleAudio(selectedCollectionIndex);
+    console.log(`Controller is pointing in the direction of points collection ${selectedCollectionIndex + 1}!`);
+  }
 }
 
 function toggleAudio(index) {
@@ -217,27 +184,6 @@ function toggleAudio(index) {
   }
 }
 
-function getIntersections(controller1) {
-    const tempMatrix = new THREE.Matrix4();
-    const raycaster = new THREE.Raycaster();
-    const intersections = [];
-  
-    // Update the raycaster with the controller's position and direction
-    const controllerMatrix = controller1.matrixWorld;
-    raycaster.ray.origin.setFromMatrixPosition(controllerMatrix);
-    raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix.identity().extractRotation(controllerMatrix));
-  
-    // Check for intersections with each points collection
-    for (const points of pointsCollections) {
-      const intersection = raycaster.intersectObject(points);
-      if (intersection.length > 0) {
-        intersections.push(intersection[0]);
-      }
-    }
-  
-    return intersections;
-  }
-
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -245,50 +191,46 @@ function onWindowResize() {
 }
 
 function animate() {
-    renderer.setAnimationLoop(render);
-  
-    // Add this line to continuously update the animation
-    requestAnimationFrame(animate);
+  renderer.setAnimationLoop(render);
+  requestAnimationFrame(animate);
+}
+
+function render() {
+  for (let i = 0; i < pointsCollections.length; i++) {
+    const analyser = analyzers[i];
+    const points = pointsCollections[i];
+
+    if (isplaying[i]) {
+      const dataArray = analyser.getFrequencyData();
+      const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
+      const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
+
+      const positionsAttribute = points.geometry.getAttribute('position');
+      const colorsAttribute = points.geometry.getAttribute('color');
+
+      for (let j = 0; j < colorsAttribute.count; j++) {
+        colorsAttribute.setXYZ(j, color.r, color.g, color.b);
+      }
+
+      const group_size = 1024 / 256;
+      for (let k = 0; k < 256; k++) {
+        const group = dataArray.slice(group_size * k, group_size * (k + 1));
+        const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
+        const vibration = averageFrequency / 10;
+
+        for (let j = 0; j < group_size; j++) {
+          const x = positionsAttribute.array[k * group_size * 3 + j * 3];
+          const y = positionsAttribute.array[k * group_size * 3 + j * 3 + 1];
+          const z = positionsAttribute.array[k * group_size * 3 + j * 3 + 2];
+
+          positionsAttribute.setXYZ(k * group_size + j, x + vibration, y + vibration, z);
+        }
+      }
+
+      colorsAttribute.needsUpdate = true;
+      positionsAttribute.needsUpdate = true;
+    }
   }
 
-  function render() {
-    for (let i = 0; i < pointsCollections.length; i++) {
-      const controller = controller1; // Use controller1 for consistency
-      const analyser = analyzers[i];
-      const points = pointsCollections[i];
-      const positions_fixed = positions_fixed_array[i]; // Use the correct positions_fixed array
-  
-      if (isplaying[i]) {
-        const dataArray = analyser.getFrequencyData();
-        const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
-        const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
-  
-        const positionsAttribute = points.geometry.getAttribute('position');
-        const colorsAttribute = points.geometry.getAttribute('color');
-  
-        for (let j = 0; j < colorsAttribute.count; j++) {
-          colorsAttribute.setXYZ(j, color.r, color.g, color.b);
-        }
-  
-        const group_size = particles / numBands;
-        for (let k = 0; k < numBands; k++) {
-          const group = dataArray.slice(group_size * k, group_size * (k + 1));
-          const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
-          const vibration = averageFrequency / 10;
-  
-          for (let j = 0; j < group_size; j++) {
-            const x = positions_fixed.array[k * group_size * 3 + j * 3];
-            const y = positions_fixed.array[k * group_size * 3 + j * 3 + 1];
-            const z = positions_fixed.array[k * group_size * 3 + j * 3 + 2];
-  
-            positionsAttribute.setXYZ(k * group_size + j, x + vibration, y + vibration, z);
-          }
-        }
-  
-        colorsAttribute.needsUpdate = true;
-        positionsAttribute.needsUpdate = true;
-      }
-    }
-  
-    renderer.render(scene, camera);
-  }
+  renderer.render(scene, camera);
+}
