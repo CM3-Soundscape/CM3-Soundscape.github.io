@@ -244,10 +244,10 @@ function render() {
       const bandAmplitude = dataArray.slice(bandStart, bandEnd).reduce((acc, value) => acc + value, 0) / (bandEnd - bandStart);
   
       // Adjust the vibration intensity based on the band amplitude
-      const vibration = (bandAmplitude / 255) * 10;
+      const vibration = bandAmplitude ;
   
       // Update the coordinates based on the vibration
-      positionsAttribute.setXYZ(i, x, y + vibration, z);
+      positionsAttribute.setXYZ(i, x + vibration, y + vibration, z + vibration);
     }
 
   // Mark the colors attribute as needing an update
