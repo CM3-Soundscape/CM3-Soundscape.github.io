@@ -50,7 +50,7 @@ function init() {
   document.body.appendChild(VRButton.createButton(renderer));
 
   controller1 = renderer.xr.getController(0);
-  controller1.addEventListener('selectstart', onSelectStart);
+  controller1.addEventListener('select', onSelect);
   scene.add(controller1);
 
   const controllerModelFactory = new XRControllerModelFactory();
@@ -153,30 +153,30 @@ function createPointsCollection(index) {
   return points;
 }
 
-function onSelectStart(event) {
-  const controllerDirection = new THREE.Vector3(0, 0, -1);
-  controllerDirection.applyQuaternion(controller1.quaternion);
-
-  const referenceVector = new THREE.Vector3(0, 0, -1);
-  const angle = controllerDirection.angleTo(referenceVector);
-  const angleDegrees = THREE.MathUtils.radToDeg(angle);
-
-  let selectedCollectionIndex = -1;
-
-  let minThetaDifference = Infinity;
-  for (let i = 0; i < pointsCollections.length; i++) {
-    const theta = (i / pointsCollections.length) * Math.PI * 2;
-    const thetaDifference = Math.abs(angle - theta);
-    if (thetaDifference < minThetaDifference) {
-      minThetaDifference = thetaDifference;
-      selectedCollectionIndex = i;
+function onSelect() {
+    const controllerDirection = new THREE.Vector3(0, 0, -1);
+    controllerDirection.applyQuaternion(controller1.quaternion);
+  
+    const referenceVector = new THREE.Vector3(0, 0, -1);
+    const angle = controllerDirection.angleTo(referenceVector);
+    const angleDegrees = THREE.MathUtils.radToDeg(angle);
+  
+    let selectedCollectionIndex = -1;
+  
+    let minThetaDifference = Infinity;
+    for (let i = 0; i < pointsCollections.length; i++) {
+      const theta = (i / pointsCollections.length) * Math.PI * 2;
+      const thetaDifference = Math.abs(angle - theta);
+      if (thetaDifference < minThetaDifference) {
+        minThetaDifference = thetaDifference;
+        selectedCollectionIndex = i;
+      }
+    }
+  
+    if (selectedCollectionIndex !== -1) {
+      toggleAudio(selectedCollectionIndex);
     }
   }
-
-  if (selectedCollectionIndex !== -1) {
-    toggleAudio(selectedCollectionIndex);
-  }
-}
 
 function toggleAudio(index) {
   if (isplaying[index]) {
