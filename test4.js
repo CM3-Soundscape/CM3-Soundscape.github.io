@@ -15,8 +15,8 @@ let analyser;
 let geometry2;
 let positions_original;
 let positions_fixed;
-let particles = 50000;
-let numBands = 32;
+let particles = 1024;
+let numBands = 1024;
 let group_size;
 
 init();
