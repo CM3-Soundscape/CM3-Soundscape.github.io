@@ -232,7 +232,7 @@ function render() {
   for (let j=0; j<numBands; j++) {
     const group = dataArray.slice(group_size*j, group_size*(j+1));
     const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
-    const vibration = averageFrequency/255;
+    const vibration = averageFrequency;
     for (let i = 0; i < group_size; i++) {
       // Get the original position
       const x = positions_fixed.array[j*group_size + i * 3];
