@@ -148,9 +148,9 @@ function init() {
 
     // colors
 
-    const vx = (x / n) + 0.5;
-    const vy = (y / n) + 0.5;
-    const vz = (z / n) + 0.5;
+    const vx = (x2 / n) + 0.5;
+    const vy = (y2 / n) + 0.5;
+    const vz = (z2 / n) + 0.5;
 
     color2.setRGB(vx, vy, vz);
 
@@ -169,9 +169,9 @@ function init() {
 
     // colors
 
-    const vx = (x / n) + 0.5;
-    const vy = (y / n) + 0.5;
-    const vz = (z / n) + 0.5;
+    const vx = (x3 / n) + 0.5;
+    const vy = (y3 / n) + 0.5;
+    const vz = (z3 / n) + 0.5;
 
     color3.setRGB(vx, vy, vz);
 
@@ -190,9 +190,9 @@ function init() {
 
     // colors
 
-    const vx = (x / n) + 0.5;
-    const vy = (y / n) + 0.5;
-    const vz = (z / n) + 0.5;
+    const vx = (x4 / n) + 0.5;
+    const vy = (y4 / n) + 0.5;
+    const vz = (z4 / n) + 0.5;
 
     color4.setRGB(vx, vy, vz);
 
