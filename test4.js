@@ -17,6 +17,7 @@ let positions_original;
 let positions_fixed;
 let particles = 50000;
 let numBands = 32;
+let group_size;
 
 init();
 animate();
@@ -232,9 +233,9 @@ function render() {
     const vibration = averageFrequency/255;
     for (let i = 0; i < group_size; i++) {
       // Get the original position
-      const x = positions_fixed.array[j*groupsize + i * 3];
-      const y = positions_fixed.array[j*groupsize + i * 3 + 1];
-      const z = positions_fixed.array[j*groupsize + i * 3 + 2];
+      const x = positions_fixed.array[j*group_size + i * 3];
+      const y = positions_fixed.array[j*group_size + i * 3 + 1];
+      const z = positions_fixed.array[j*group_size + i * 3 + 2];
       // Update the y-coordinate based on the vibration
       positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z);
     }
