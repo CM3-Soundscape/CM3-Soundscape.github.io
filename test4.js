@@ -232,7 +232,7 @@ function render() {
   for (let j = 0; j < numBands; j++) {
     const group = dataArray.slice(group_size * j, group_size * (j + 1));
     const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
-    const vibration = averageFrequency;
+    const vibration = averageFrequency/10;
   
     for (let i = 0; i < group_size; i++) {
       // Get the original position
@@ -241,7 +241,7 @@ function render() {
       const z = positions_fixed.array[j * group_size * 3 + i * 3 + 2];
   
       // Update the y-coordinate based on the vibration
-      positionsAttribute.setXYZ(j * group_size + i, x, y + vibration, z);
+      positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y + vibration, z);
     }
   }
   // Mark the colors attribute as needing an update
