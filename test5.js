@@ -10,7 +10,6 @@ let audioElements;
 let analyzers;
 let isplaying = [false, false, false, false];
 let listener;
-let thetaValues = [];
 
 init();
 animate();
@@ -60,13 +59,14 @@ function init() {
   const controllerGrip1 = renderer.xr.getControllerGrip(0);
   controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
   scene.add(controllerGrip1);
-  const geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
 
-  const line = new THREE.Line( geometry );
+  const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]);
+
+  const line = new THREE.Line(geometry);
   line.name = 'line';
   line.scale.z = 5;
 
-  controller1.add( line.clone() );
+  controller1.add(line.clone());
 
   // Initialize Web Audio API
   listener = new THREE.AudioListener();
@@ -78,10 +78,6 @@ function init() {
     const points = createPointsCollection(i);
     pointsCollections.push(points);
     scene.add(points);
-
-    const positions_original = points.geometry.getAttribute('position');
-    const positions_fixed = positions_original.clone();
-    Object.freeze(positions_fixed);
   }
 
   listener = new THREE.AudioListener();
@@ -95,7 +91,7 @@ function createAudioElements() {
     './sounds/drums.mp3',
     './sounds/Audio 1 (Coffee Shop).mp3',
     './sounds/Audio 2 (Walking).mp3',
-    './sounds/Audio 3 - Korenmarkt.mp3'
+    './sounds/Audio 3 - Korenmarkt.mp3',
   ];
 
   const elements = audioFiles.map((file) => {
@@ -168,8 +164,9 @@ function onSelectStart(event) {
   let selectedCollectionIndex = -1;
 
   let minThetaDifference = Infinity;
-  for (let i = 0; i < thetaValues.length; i++) {
-    const thetaDifference = Math.abs(angle - thetaValues[i]);
+  for (let i = 0; i < pointsCollections.length; i++) {
+    const theta = (i / pointsCollections.length) * Math.PI * 2;
+    const thetaDifference = Math.abs(angle - theta);
     if (thetaDifference < minThetaDifference) {
       minThetaDifference = thetaDifference;
       selectedCollectionIndex = i;
