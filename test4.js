@@ -89,11 +89,23 @@ function init() {
   controller2.add(line.clone());
 
   const geometry2 = new THREE.BufferGeometry();
+  const geometry3 = new THREE.BufferGeometry();
+  const geometry4 = new THREE.BufferGeometry();
+  const geometry5 = new THREE.BufferGeometry();
 
   const positions = [];
+  const positions2 = [];
+  const positions3 = [];
+  const positions4 = [];
   const colors = [];
+  const colors2 = [];
+  const colors3 = [];
+  const colors4 = [];
 
   const color = new THREE.Color();
+  const color2 = new THREE.Color();
+  const color3 = new THREE.Color();
+  const color4 = new THREE.Color();
 
   const n = 1; // distribute points in a cube of size 1 around (-1, 0.5, -1)
 
@@ -118,18 +130,106 @@ function init() {
     colors.push(color.r, color.g, color.b);
 
   }
+  for (let i = 0; i < particles; i++) {
+
+    // positions
+
+    const x2 = (Math.random() - 0.5) * n + 1;
+    const y2 = Math.random() * n + 0.5;
+    const z2 = (Math.random() - 0.5) * n - 1;
+
+    positions2.push(x2, y2, z2);
+
+    // colors
+
+    const vx = (x / n) + 0.5;
+    const vy = (y / n) + 0.5;
+    const vz = (z / n) + 0.5;
+
+    color2.setRGB(vx, vy, vz);
+
+    colors2.push(color2.r, color2.g, color2.b);
+
+  }
+  for (let i = 0; i < particles; i++) {
+
+    // positions
+
+    const x3 = (Math.random() - 0.5) * n - 1;
+    const y3 = Math.random() * n + 0.5;
+    const z3 = (Math.random() - 0.5) * n + 1;
+
+    positions3.push(x3, y3, z3);
+
+    // colors
+
+    const vx = (x / n) + 0.5;
+    const vy = (y / n) + 0.5;
+    const vz = (z / n) + 0.5;
+
+    color3.setRGB(vx, vy, vz);
+
+    colors3.push(color3.r, color3.g, color3.b);
+
+  }
+  for (let i = 0; i < particles; i++) {
+
+    // positions
+
+    const x4 = (Math.random() - 0.5) * n - 1;
+    const y4 = Math.random() * n + 0.5;
+    const z4 = (Math.random() - 0.5) * n - 1;
+
+    positions4.push(x4, y4, z4);
+
+    // colors
+
+    const vx = (x / n) + 0.5;
+    const vy = (y / n) + 0.5;
+    const vz = (z / n) + 0.5;
+
+    color4.setRGB(vx, vy, vz);
+
+    colors4.push(color4.r, color4.g, color4.b);
+
+  }
 
   geometry2.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry2.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+  geometry3.setAttribute('position', new THREE.Float32BufferAttribute(positions2, 3));
+  geometry3.setAttribute('color', new THREE.Float32BufferAttribute(colors2, 3));
+
+  geometry4.setAttribute('position', new THREE.Float32BufferAttribute(positions3, 3));
+  geometry4.setAttribute('color', new THREE.Float32BufferAttribute(colors3, 3));
+
+  geometry5.setAttribute('position', new THREE.Float32BufferAttribute(positions4, 3));
+  geometry5.setAttribute('color', new THREE.Float32BufferAttribute(colors4, 3));
   
 
   const material = new THREE.PointsMaterial({ size: 0.001, vertexColors: true });
 
   points = new THREE.Points(geometry2, material);
   scene.add(points);
+  points2 = new THREE.Points(geometry3, material);
+  scene.add(points2);
+  points3 = new THREE.Points(geometry4, material);
+  scene.add(points3);
+  points4 = new THREE.Points(geometry5, material);
+  scene.add(points4);
   positions_original = points.geometry.getAttribute('position');
+  positions_original2 = points2.geometry.getAttribute('position');
+  positions_original3 = points3.geometry.getAttribute('position');
+  positions_original4 = points4.geometry.getAttribute('position');
+
   positions_fixed = positions_original.clone();
+  positions_fixed2 = positions_original2.clone();
+  positions_fixed3 = positions_original3.clone();
+  positions_fixed4 = positions_original4.clone();
   Object.freeze(positions_fixed);
+  Object.freeze(positions_fixed2);
+  Object.freeze(positions_fixed3);
+  Object.freeze(positions_fixed4);
   //
   
 
