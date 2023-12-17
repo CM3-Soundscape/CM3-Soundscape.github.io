@@ -6,8 +6,9 @@ import { XRHandModelFactory } from './webxr/XRHandModelFactory.js';
 let camera, scene, renderer;
 let controllers = [];
 let pointsCollections = [];
-let audioElements = [];
-let analyzers = [];
+let audio1, audio2, audio3, audio4;
+let audioFile1, audioFile2, audioFile3, audioFile4;
+let analyzers;
 let isplaying = [false, false, false, false];
 let listener;
 let group_size;
@@ -27,7 +28,24 @@ function init() {
 
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
 
-  // ... (Lighting setup and floor)
+  scene.add(new THREE.HemisphereLight(0xbcbcbc, 0xa5a5a5, 3));
+
+  const light = new THREE.DirectionalLight(0xffffff, 3);
+  light.position.set(0, 6, 0);
+  light.castShadow = true;
+  light.shadow.camera.top = 10;
+  light.shadow.camera.bottom = -10;
+  light.shadow.camera.right = 10;
+  light.shadow.camera.left = -10;
+  light.shadow.mapSize.set(4096, 4096);
+  scene.add(light);
+
+  const floorGeometry = new THREE.PlaneGeometry(4, 4);
+  const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
+  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  scene.add(floor);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -51,17 +69,51 @@ function init() {
   }
   audioFiles= ['./sounds/Audio 1 (Coffee Shop).mp3', './sounds/Audio 2 (Walking).mp3', './sounds/Audio 3 - Korenmarkt.mp3', './sounds/drums.mp3'];
   // Create audio elements, analyzers, and points collections
-  for (let i = 0; i < 4; i++) {
-    const audio = new THREE.Audio(listener);
-    const audioFile = audioFiles[i]; // Change to your audio file names
-    const loader = new THREE.AudioLoader();
-    loader.load(audioFile, function (buffer) {
-      audio.setBuffer(buffer);
-      audio.setLoop(true);
-      audio.setVolume(0.5);
-    });
-    audio.pause();
-    audioElements.push(audio);
+  // Initialize Web Audio API
+  listener = new THREE.AudioListener();
+
+  // Create an Audio object and link it to the listener
+  audio1 = new THREE.Audio(listener);
+  audio2 = new THREE.Audio(listener);
+  audio3 = new THREE.Audio(listener);
+  audio4 = new THREE.Audio(listener);
+
+  // Load an audio file
+  audioFile1 = './sounds/drums.mp3'; // Change to your audio file
+  audioFile2 = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
+  audioFile3 = './sounds/Audio 2 (Walking).mp3'; // Change to your audio file
+  audioFile4 = './sounds/Audio 3 - Korenmarkt.mp3'; // Change to your audio file
+
+  // Load audio using THREE.AudioLoader
+  const loader1 = new THREE.AudioLoader();
+  
+  loader1.load(audioFile1, function (buffer) {
+    audio1.setBuffer(buffer);
+    audio1.setLoop(true); // Set to true if you want the audio to loop
+    audio1.setVolume(0.5); // Adjust the volume if needed
+  });
+  const loader2 = new THREE.AudioLoader();
+  loader2.load(audioFile2, function (buffer) {
+	audio2.setBuffer(buffer);
+	audio2.setLoop(true); // Set to true if you want the audio to loop
+	audio2.setVolume(0.5); // Adjust the volume if needed
+  }
+  );
+  const loader3 = new THREE.AudioLoader();
+  loader3.load(audioFile3, function (buffer) {
+	audio3.setBuffer(buffer);
+	audio3.setLoop(true); // Set to true if you want the audio to loop
+	audio3.setVolume(0.5); // Adjust the volume if needed
+  }
+  );
+  const loader4 = new THREE.AudioLoader();
+  loader4.load(audioFile4, function (buffer) {
+	audio4.setBuffer(buffer);
+	audio4.setLoop(true); // Set to true if you want the audio to loop
+	audio4.setVolume(0.5); // Adjust the volume if needed
+  }
+  );
+
 
     const analyzer = new THREE.AudioAnalyser(audio, numBands);
     analyzers.push(analyzer);
@@ -74,7 +126,7 @@ function init() {
     const positions_fixed = positions_original.clone();
     Object.freeze(positions_fixed);
     positions_fixed_array.push(positions_fixed);
-  }
+
 
   listener = new THREE.AudioListener();
   camera.add(listener);
