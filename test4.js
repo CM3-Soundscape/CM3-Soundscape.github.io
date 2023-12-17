@@ -229,17 +229,19 @@ function render() {
     colorsAttribute.setXYZ(i, color.r, color.g, color.b);
   }
   const group_size = particles/numBands;
-  for (let j=0; j<numBands; j++) {
-    const group = dataArray.slice(group_size*j, group_size*(j+1));
+  for (let j = 0; j < numBands; j++) {
+    const group = dataArray.slice(group_size * j, group_size * (j + 1));
     const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
     const vibration = averageFrequency;
+  
     for (let i = 0; i < group_size; i++) {
       // Get the original position
-      const x = positions_fixed.array[j*group_size + i * 3];
-      const y = positions_fixed.array[j*group_size + i * 3 + 1];
-      const z = positions_fixed.array[j*group_size + i * 3 + 2];
+      const x = positions_fixed.array[j * group_size * 3 + i * 3];
+      const y = positions_fixed.array[j * group_size * 3 + i * 3 + 1];
+      const z = positions_fixed.array[j * group_size * 3 + i * 3 + 2];
+  
       // Update the y-coordinate based on the vibration
-      positionsAttribute.setXYZ(i, x+ vibration, y + vibration, z);
+      positionsAttribute.setXYZ(j * group_size + i, x, y + vibration, z);
     }
   }
   // Mark the colors attribute as needing an update
