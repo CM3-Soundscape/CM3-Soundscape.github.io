@@ -7,14 +7,20 @@ let camera, scene, renderer;
 let controller1, controller2;
 let points;
 let isplaying = false;
-let audio;
-let audioFile;
+let audio1;
+let audioFile1;
 let listener;
 let averageFrequency = 0;
 let analyser;
 let geometry2;
 let positions_original;
 let positions_fixed;
+let positions_original2;
+let positions_fixed2;
+let positions_original3;
+let positions_fixed3;
+let positions_original4;
+let positions_fixed4;
 let particles = 1024;
 let numBands = 1024;
 let group_size;
@@ -236,17 +242,17 @@ function init() {
   listener = new THREE.AudioListener();
 
   // Create an Audio object and link it to the listener
-  audio = new THREE.Audio(listener);
-  audioFile = './sounds/drums.mp3'; // Change to your audio file
+  audio1 = new THREE.Audio(listener);
+  audioFile1 = './sounds/drums.mp3'; // Change to your audio file
   const loader = new THREE.AudioLoader();
-  loader.load(audioFile, function (buffer) {
-    audio.setBuffer(buffer);
-    audio.setLoop(true); // Set to true if you want the audio to loop
-    audio.setVolume(0.5); // Adjust the volume if needed
+  loader.load(audioFile1, function (buffer) {
+    audio1.setBuffer(buffer);
+    audio1.setLoop(true); // Set to true if you want the audio to loop
+    audio1.setVolume(0.5); // Adjust the volume if needed
   });
-  audio.pause();
+  audio1.pause();
   
-  analyser = new THREE.AudioAnalyser(audio, numBands);
+  analyser = new THREE.AudioAnalyser(audio1, numBands);
 
   camera.add(listener);
 
@@ -258,7 +264,7 @@ function onSelectStart(event) {
   const intersections = getIntersections(controller);
   if (intersections.length > 0) {
     const intersection = intersections[0];
-    toggleAudio(audio);
+    toggleAudio(audio1);
   }
 }
 
