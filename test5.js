@@ -60,6 +60,13 @@ function init() {
   const controllerGrip1 = renderer.xr.getControllerGrip(0);
   controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
   scene.add(controllerGrip1);
+  const geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+
+  const line = new THREE.Line( geometry );
+  line.name = 'line';
+  line.scale.z = 5;
+
+  controller1.add( line.clone() );
 
   // Initialize Web Audio API
   listener = new THREE.AudioListener();
