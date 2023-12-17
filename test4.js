@@ -101,9 +101,9 @@ function init() {
 
     // positions
 
-    const x = (Math.random() - 0.5) * n + 1;
+    const x = (Math.random() - 0.5) * n - 1;
     const y = Math.random() * n + 0.5;
-    const z = (Math.random() - 0.5) * n + 1;
+    const z = (Math.random() - 0.5) * n - 1;
 
     positions.push(x, y, z);
 
@@ -241,7 +241,7 @@ function render() {
       const z = positions_fixed.array[j * group_size * 3 + i * 3 + 2];
   
       // Update the y-coordinate based on the vibration
-      positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y + vibration, z);
+      positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y, z + vibration);
     }
   }
   // Mark the colors attribute as needing an update
