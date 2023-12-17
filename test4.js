@@ -214,6 +214,8 @@ function animate() {
 
 function render() {
   // Update the average frequency
+  if (isplaying) {
+   
   const dataArray = analyser.getFrequencyData();
   const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
 	const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
@@ -244,5 +246,6 @@ function render() {
   colorsAttribute.needsUpdate = true;
   // Mark the positions attribute as needing an update
   positionsAttribute.needsUpdate = true;
+}
   renderer.render(scene, camera);
 }
