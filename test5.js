@@ -86,6 +86,7 @@ function init() {
 
   listener = new THREE.AudioListener();
   camera.add(listener);
+  toggleAudio(0);
   window.addEventListener('resize', onWindowResize);
 }
 
@@ -177,7 +178,6 @@ function onSelectStart(event) {
 
   if (selectedCollectionIndex !== -1) {
     toggleAudio(selectedCollectionIndex);
-    console.log(`Controller is pointing in the direction of points collection ${selectedCollectionIndex + 1}!`);
   }
 }
 
