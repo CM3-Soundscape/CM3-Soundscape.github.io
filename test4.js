@@ -215,7 +215,7 @@ function animate() {
 function render() {
   // Update the average frequency
   if (isplaying) {
-/*    
+   
   const dataArray = analyser.getFrequencyData();
   const averageFrequency = dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
 	const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
@@ -227,13 +227,12 @@ function render() {
   // Iterate through each vertex and update its color
   for (let i = 0; i < colorsAttribute.count; i++) {
     colorsAttribute.setXYZ(i, color.r, color.g, color.b);
-  } */
+  }
   const group_size = particles/numBands;
   for (let j = 0; j < numBands; j++) {
     const group = dataArray.slice(group_size * j, group_size * (j + 1));
     const averageFrequency = group.reduce((acc, value) => acc + value, 0) / group.length;
     const vibration = averageFrequency/10;
-    const color = new THREE.Color().setHSL(averageFrequency / 255, 1.0, 0.5);
   
     for (let i = 0; i < group_size; i++) {
       // Get the original position
@@ -242,21 +241,20 @@ function render() {
       const z = positions_fixed.array[j * group_size * 3 + i * 3 + 2];
 
       if (x<0 & z < 0) {
-        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y, z - vibration);
+        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y + vibration, z - vibration);
       }
       else if (x<0 & z > 0) {
-        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y, z + vibration);
+        positionsAttribute.setXYZ(j * group_size + i, x- vibration , y + vibration, z + vibration);
       }
       else if (x>0 & z < 0) {
-        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y, z - vibration);
+        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y + vibration, z - vibration);
       }
       else if (x>0 & z > 0) {
-        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y, z + vibration);
+        positionsAttribute.setXYZ(j * group_size + i, x+ vibration , y + vibration , z + vibration);
       }
       else {
         positionsAttribute.setXYZ(j * group_size + i, x , y, z );
       }
-      colorsAttribute.setXYZ(j * group_size + i, color.r, color.g, color.b);
   
     }
   }
