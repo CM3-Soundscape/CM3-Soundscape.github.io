@@ -11,6 +11,7 @@ let analyzers = [];
 let isplaying = [false, false, false, false];
 let listener;
 let group_size;
+let audioFiles;
 let particles = 1024;
 let numBands = 256;
 let positions_fixed_array = [];
@@ -48,11 +49,11 @@ function init() {
     controllerGrip.add(new XRControllerModelFactory().createControllerModel(controllerGrip));
     scene.add(controllerGrip);
   }
-
+  audioFiles= ['./sounds/Audio 1 (Coffee Shop).mp3', './sounds/Audio 2 (Walking).mp3', './sounds/Audio 3 - Korenmarkt.mp3', './sounds/drums.mp3'];
   // Create audio elements, analyzers, and points collections
   for (let i = 0; i < 4; i++) {
     const audio = new THREE.Audio(listener);
-    const audioFile = `./sounds/drums_${i + 1}.mp3`; // Change to your audio file names
+    const audioFile = audioFiles[i]; // Change to your audio file names
     const loader = new THREE.AudioLoader();
     loader.load(audioFile, function (buffer) {
       audio.setBuffer(buffer);
