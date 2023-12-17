@@ -21,6 +21,9 @@ let audioFile4;
 let listener;
 let averageFrequency = 0;
 let analyser;
+let analyser2;
+let analyser3;
+let analyser4;
 let geometry2;
 let positions_original;
 let positions_fixed;
@@ -255,15 +258,15 @@ function init() {
   loadAudio(audio1, audioFile1);
 
   audio2 = new THREE.Audio(listener);
-  audioFile2 = './sounds/audio2.mp3'; // Change to your audio file
+  audioFile2 = './sounds/piano_music.mp3'; // Change to your audio file
   loadAudio(audio2, audioFile2);
 
   audio3 = new THREE.Audio(listener);
-  audioFile3 = './sounds/audio3.mp3'; // Change to your audio file
+  audioFile3 = './sounds/relax_music.mp3'; // Change to your audio file
   loadAudio(audio3, audioFile3);
 
   audio4 = new THREE.Audio(listener);
-  audioFile4 = './sounds/audio4.mp3'; // Change to your audio file
+  audioFile4 = './sounds/beat_music.mp3'; // Change to your audio file
   loadAudio(audio4, audioFile4);
 
   analyser = new THREE.AudioAnalyser(audio1, numBands);
