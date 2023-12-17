@@ -241,18 +241,28 @@ function init() {
 
   listener = new THREE.AudioListener();
 
-  // Create an Audio object and link it to the listener
   audio1 = new THREE.Audio(listener);
-  audioFile1 = './sounds/drums.mp3'; // Change to your audio file
-  const loader = new THREE.AudioLoader();
-  loader.load(audioFile1, function (buffer) {
-    audio1.setBuffer(buffer);
-    audio1.setLoop(true); // Set to true if you want the audio to loop
-    audio1.setVolume(0.5); // Adjust the volume if needed
-  });
-  audio1.pause();
-  
+  audioFile1 = './sounds/drums.mp3';
+  loadAudio(audio1, audioFile1);
+
+  audio2 = new THREE.Audio(listener);
+  audioFile2 = './sounds/audio2.mp3'; // Change to your audio file
+  loadAudio(audio2, audioFile2);
+
+  audio3 = new THREE.Audio(listener);
+  audioFile3 = './sounds/audio3.mp3'; // Change to your audio file
+  loadAudio(audio3, audioFile3);
+
+  audio4 = new THREE.Audio(listener);
+  audioFile4 = './sounds/audio4.mp3'; // Change to your audio file
+  loadAudio(audio4, audioFile4);
+
   analyser = new THREE.AudioAnalyser(audio1, numBands);
+  analyser2 = new THREE.AudioAnalyser(audio2, numBands);
+  analyser3 = new THREE.AudioAnalyser(audio3, numBands);
+  analyser4 = new THREE.AudioAnalyser(audio4, numBands);
+
+  camera.add(listener);
 
   camera.add(listener);
 
@@ -262,17 +272,38 @@ function init() {
 function onSelectStart(event) {
   const controller = event.target;
   const intersections = getIntersections(controller);
+
   if (intersections.length > 0) {
     const intersection = intersections[0];
-    toggleAudio(audio1);
+
+    if (intersection.object === points) {
+      toggleAudio(audio1, isplaying);
+    } else if (intersection.object === points2) {
+      toggleAudio(audio2, isplaying2);
+    } else if (intersection.object === points3) {
+      toggleAudio(audio3, isplaying3);
+    } else if (intersection.object === points4) {
+      toggleAudio(audio4, isplaying4);
+    }
   }
 }
+
 
 function onSelectEnd() {
   // Handle the selectend event here if needed
 }
 
-function toggleAudio(audio) {
+function loadAudio(audio, file) {
+  const loader = new THREE.AudioLoader();
+  loader.load(file, function (buffer) {
+    audio.setBuffer(buffer);
+    audio.setLoop(true);
+    audio.setVolume(0.5);
+  });
+  audio.pause();
+}
+
+function toggleAudio(audio, isplaying) {
   if (isplaying) {
     audio.pause();
     isplaying = false;
