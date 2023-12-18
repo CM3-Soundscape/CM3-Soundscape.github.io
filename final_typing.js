@@ -41,13 +41,13 @@ function init() {
   light.shadow.camera.left = -10;
   light.shadow.mapSize.set(4096, 4096);
   scene.add(light);
-
+/* 
   const floorGeometry = new THREE.PlaneGeometry(4, 4);
   const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
-  scene.add(floor);
+  scene.add(floor); */
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -101,9 +101,9 @@ function init() {
 
     // positions
 
-    const x = (Math.random() - 0.5) * n - 1;
+    const x = (Math.random() - 0.5) * n - 3;
     const y = Math.random() * n + 0.5;
-    const z = (Math.random() - 0.5) * n - 1;
+    const z = (Math.random() - 0.5) * n - 3;
 
     positions.push(x, y, z);
 
