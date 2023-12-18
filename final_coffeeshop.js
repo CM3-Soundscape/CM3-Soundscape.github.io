@@ -42,12 +42,12 @@ function init() {
   light.shadow.mapSize.set(4096, 4096);
   scene.add(light);
 
-  const floorGeometry = new THREE.PlaneGeometry(4, 4);
+  /* const floorGeometry = new THREE.PlaneGeometry(4, 4);
   const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x666666 });
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
-  scene.add(floor);
+  scene.add(floor); */
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
