@@ -87,10 +87,10 @@ function init() {
   audio4 = new THREE.Audio(listener);
 
   // Load an audio file
-  audioFile1 = './sounds/drums.mp3'; // Change to your audio file
-  audioFile2 = './sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
-  audioFile3 = './sounds/Audio 2 (Walking).mp3'; // Change to your audio file
-  audioFile4 = './sounds/Audio 3 - Korenmarkt.mp3'; // Change to your audio file
+  audioFile1 = '../sounds/drums.mp3'; // Change to your audio file
+  audioFile2 = '../sounds/Audio 1 (Coffee Shop).mp3'; // Change to your audio file
+  audioFile3 = '../sounds/Audio 2 (Walking).mp3'; // Change to your audio file
+  audioFile4 = '../sounds/Audio 3 - Korenmarkt.mp3'; // Change to your audio file
 
   // Load audio using THREE.AudioLoader
   const loader1 = new THREE.AudioLoader();
