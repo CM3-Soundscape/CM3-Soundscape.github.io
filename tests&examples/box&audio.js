@@ -48,6 +48,7 @@ import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/thr
 			const cube = new THREE.Mesh( geometry, material );
 			scene.add( cube );
 
+            
 			camera.position.z = 5;
 			function animate() {
 			    requestAnimationFrame( animate );
