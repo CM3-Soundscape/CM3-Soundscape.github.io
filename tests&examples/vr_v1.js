@@ -1,8 +1,8 @@
 // import * as THREE from 'three';
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.module.js';
-import {VRButton} from './webxr/VRButton.js';
-import {XRControllerModelFactory} from './webxr/XRControllerModelFactory.js';
-import {XRHandModelFactory} from './webxr/XRHandModelFactory.js';
+import {VRButton} from '../webxr/VRButton.js';
+import {XRControllerModelFactory} from '../webxr/XRControllerModelFactory.js';
+import {XRHandModelFactory} from '../webxr/XRHandModelFactory.js';
 
 let camera, scene, renderer;
 let controller1;
