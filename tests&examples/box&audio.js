@@ -14,7 +14,7 @@ import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/thr
                 const listener = new THREE.AudioListener();
 
             const audio = new THREE.Audio( listener );
-            const file = './sounds/drums.mp3';
+            const file = '../sounds/drums.mp3';
 
             if ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) {
 
